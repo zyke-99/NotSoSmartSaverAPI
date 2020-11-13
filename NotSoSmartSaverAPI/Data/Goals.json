@@ -1,0 +1,29 @@
+[
+  {
+    "goalTime": "2020-10-04T15:50:29.134689+03:00",
+    "goalExpectedTime": "0001-01-01T00:00:00",
+    "goalId": "2f30ab93-e06a-46e3-8b0c-3850840108cd",
+    "ownerId": "9e407e01-03bf-4e83-8e4f-0491ba538ad6",
+    "moneyRequired": 20000.0,
+    "moneyAllocated": 0.0,
+    "goalName": "Bemsas"
+  },
+  {
+    "goalTime": "2020-10-06T10:34:06.6554758+03:00",
+    "goalExpectedTime": "2020-10-22T10:33:53",
+    "goalId": "639d4117-7c76-4b1f-aaa9-2af7210ba336",
+    "ownerId": "371d736d-7482-40dc-af9b-fb448d9a1604",
+    "moneyRequired": 0.0,
+    "moneyAllocated": 99353.0,
+    "goalName": "Nauja masina"
+  },
+  {
+    "goalTime": "2020-10-13T09:43:09.7514954+03:00",
+    "goalExpectedTime": "2020-10-15T09:42:26",
+    "goalId": "8cbd8487-4720-4d01-aca3-a2934de247a8",
+    "ownerId": "01349321-690e-470a-8267-8008ea792355",
+    "moneyRequired": 3425.0,
+    "moneyAllocated": 0.0,
+    "goalName": "Mercedes"
+  }
+]
