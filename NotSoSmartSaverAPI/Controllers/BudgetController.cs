@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using NotSoSmartSaverAPI.DTO.BudgetDTO;
 using NotSoSmartSaverWFA;
 using NotSoSmartSaverWFA.DataAccess;
-using NotSoSmartSaverWFA.Models;
+using NotSoSmartSaverAPI.ModelsGenerated;
 
 namespace NotSoSmartSaverAPI.Controllers
 {

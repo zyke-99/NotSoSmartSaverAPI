@@ -1,22 +1,23 @@
-﻿using NotSoSmartSaverWFA.Models;
+﻿using NotSoSmartSaverAPI.DTO.UserDTO;
+using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NotSoSmartSaverWFA.DataAccess
-{
+namespace NotSoSmartSaverAPI.Interfaces
+{ 
     public interface IUserProcessor
     {
-        User getUserByUserEmail(string userEmail);
+        Users getUserByUserEmail(string userEmail);
 
-        User getUserById(string userId);
+        Users getUserById(UserIdDTO data);
 
-        void removeUser(string userId);
+        bool removeUser(UserIdDTO data);
 
-        void modifyUser(string userId, string newUserName = "", string newUserLastName = "", string newUserEmail = "", double newUserMoney = 0);
+        bool modifyUser(ModifyUserDTO data);
 
-        void changeUserPassword(string userId, string newUserPassword);
+        bool changeUserPassword(ChangePasswordDTO data);
 
-        void createNewUser(string userEmail, string userPassword, string userName, string userLastName);
+        bool createNewUser(NewUserDTO data);
     }
 }

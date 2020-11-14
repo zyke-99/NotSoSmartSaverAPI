@@ -1,23 +1,20 @@
-﻿using NotSoSmartSaverWFA.Models;
+﻿using NotSoSmartSaverAPI.DTO.GoalDTO;
+using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NotSoSmartSaverWFA.DataAccess
+namespace NotSoSmartSaverAPI.Interfaces
 {
     interface IGoalProcessor
     {
-        List<Goal> getGoals(string ownerId);
+        public List<Goal> getGoals(GetGoalsDTO data);
 
-        void removeGoal(string goalId);
+        public bool removeGoal(string goalId);
 
-        void modifyGoalName(string goalId, string newGoalName);
+        public bool modifyGoal(ModifyGoalDTO data);
 
-        void modifyGoalMoneyRequired(string goalId, double newMoneyRequired);
-
-        void modifyGoalMoneyAllocated(string goalId, double newMoneyAllocated);
-
-        void addNewGoal(string ownerId, string goalName, double moneyRequired, DateTime goalExpectedTime);
+        public void addNewGoal(NewGoalDTO data);
 
     }
 }

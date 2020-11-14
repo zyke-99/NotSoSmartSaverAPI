@@ -8,6 +8,6 @@ namespace NotSoSmartSaverAPI.DTO.IncomeDTO
     public class IncomeSumByOwnerDTO
     {
         public string userName { get; set; }
-        public double sum { get; set; }
+        public float sum { get; set; }
     }
 }

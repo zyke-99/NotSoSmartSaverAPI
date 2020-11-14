@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NotSoSmartSaverAPI.DTO.IncomeDTO;
-using NotSoSmartSaverWFA.DataAccess;
-using NotSoSmartSaverWFA.DataAccess.DataValidation;
-using NotSoSmartSaverWFA.Models;
+//using NotSoSmartSaverWFA.DataAccess;
+//using NotSoSmartSaverWFA.DataAccess.DataValidation;
+using NotSoSmartSaverAPI.Processors;
+using NotSoSmartSaverAPI.ModelsGenerated;
 
 namespace NotSoSmartSaverAPI.Controllers
 {
@@ -36,7 +37,7 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpGet("GetAllIncomes")]
         public IActionResult GetAllIncomes ([FromBody]GetAllDTO data)
         {
-            List<Income> incomesTemp = inp.getIncomes(data.ownerId).OrderByDescending(x => x.incomeTime).ToList();
+            List<Income> incomesTemp = inp.getAllIncomes(data.ownerId).OrderByDescending(x => x.incomeTime).ToList();
             List<Income> incomes = new List<Income>();
             if (incomesTemp == null) return Ok(new List<Income>());
             if (data.maxNumberOfIncomesToShow <= -1)
@@ -96,7 +97,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public IActionResult AddIncome([FromBody] NewIncomeDTO data)
         {
             
-             inp.newIncome(data.ownerId, data.userId, data.incomeName, data.moneyReceived);                
+             inp.AddIncome(data);                
              return Ok("Income added");
 
         }

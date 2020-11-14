@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotSoSmartSaverAPI.DTO.GroupsDTO;
 using NotSoSmartSaverWFA.DataAccess;
-using NotSoSmartSaverWFA.Models;
+using NotSoSmartSaverAPI.ModelsGenerated;
 
 namespace NotSoSmartSaverAPI.Controllers
 {
@@ -54,7 +54,7 @@ namespace NotSoSmartSaverAPI.Controllers
         //}
 
         [HttpGet("GetGroups")]
-        public IActionResult GetGroups(User user)
+        public IActionResult GetGroups(Users user)
         {
             return Ok(grp.getUserGroups(user.userId));
         }
