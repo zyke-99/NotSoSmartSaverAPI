@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace NotSoSmartSaverWFA.DataAccess
+namespace NotSoSmartSaverAPI
 {
     public enum CategoryEnum
     {
         Food,
-        Clothes,
         Leisure,
         Rent,
         Loan,
@@ -17,6 +17,7 @@ namespace NotSoSmartSaverWFA.DataAccess
         Car,
         Subscriptions,
         Goal,
-        Other
+        Other,
+        Clothes
     };
 }

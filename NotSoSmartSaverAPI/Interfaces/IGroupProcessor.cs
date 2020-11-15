@@ -13,7 +13,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public bool CreateGroup(NewGroupDTO data);
 
-        //public List<Groups> GetGroups(User user); ---GALIMAI REIKIA NAUJO DTO, KURIS SAVYJE TURETU USERID
+        public List<Groups> GetGroups(GetUserGroupsDTO data);
         //BTW, TA DTO SAUGOT PRIE GroupsDTO ----- VISIEM MODELIAM TURI BUTI SKIRTINGI DTO FOLDERIAI
 
         public List<Users> GetGroupUsers(GroupIdDTO data);
@@ -22,7 +22,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public bool RemoveUserFromGroup(RemoveUserFromGroupDTO data);
 
-        public bool ModifyGroup(NewGroupDTO data);
+        public bool ModifyGroup(ModifyGroupDTO data);
 
     }
 }

@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NotSoSmartSaverAPI.DTO.UserDTO;
 
 namespace NotSoSmartSaverAPI.Processors
 {
     public class IncomeProcessor : IIncomeProcessor
     {
+        IUserProcessor usp = new UserProcessor();
         public bool AddIncome(NewIncomeDTO data)
         {
 
@@ -31,13 +33,44 @@ namespace NotSoSmartSaverAPI.Processors
         public List<Income> GetAllIncomes(GetAllDTO data)
         {
             NSSSContext context = new NSSSContext();
-            var listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow)).OrderBy(a => a.Incometime).Take(data.maxNumberOfIncomesToShow).ToList();
+            List<Income> listOfIncomes;
+            if (data.numberOfDaysToShow < 0)
+            {
+                if (data.maxNumberOfIncomesToShow < 0)
+                {
+                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId).ToList();
+                }
+                else
+                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId).OrderBy(a => a.Incometime).Take(data.maxNumberOfIncomesToShow).ToList();
+            }
+            else
+            {
+                if (data.maxNumberOfIncomesToShow < 0)
+                {
+                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow)).ToList();
+                }
+                else
+                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow)).OrderBy(a => a.Incometime).Take(data.maxNumberOfIncomesToShow).ToList();
+            }
             return listOfIncomes;
         }
 
         public List<IncomeSumByOwnerDTO> GetSumOfIncomesByOwner(IncomesByOwnerDTO data)
         {
-            throw new NotImplementedException();
+            GetAllDTO data2 = new GetAllDTO();
+            data2.ownerId = data.ownerId;
+            data2.numberOfDaysToShow = data.numberOfDaysToShow;
+            data2.maxNumberOfIncomesToShow = -1;
+
+            List<Income> listOfIncomes = GetAllIncomes(data2);
+            List<IncomeSumByOwnerDTO> modifiedIncomes = listOfIncomes.
+                GroupBy(e => e.Userid).
+                Select(ce => new IncomeSumByOwnerDTO
+                {
+                    userName = usp.getUserById(new UserIdDTO { userId = ce.First().Userid } ).Username,
+                    sum = ce.Sum(e => e.Moneyrecieved)
+                }).ToList();
+            return modifiedIncomes;
         }
 
         public bool ModifyIncome(NewIncomeDTO data)
