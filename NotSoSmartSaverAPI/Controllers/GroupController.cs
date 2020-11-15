@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using NotSoSmartSaverAPI.DTO.GroupsDTO;
 using NotSoSmartSaverWFA.DataAccess;
 using NotSoSmartSaverAPI.ModelsGenerated;
+using NotSoSmartSaverAPI.Interfaces;
+using NotSoSmartSaverAPI.Processors;
 
 namespace NotSoSmartSaverAPI.Controllers
 {
@@ -16,30 +18,24 @@ namespace NotSoSmartSaverAPI.Controllers
     {
 
 
-        IGroupProcessor grp;
-        IUserProcessor usp;
-        IBudgetProcessor bup;
+        IGroupProcessor grp = new GroupProcessor();
+        IUserProcessor usp = new UserProcessor();
+        IBudgetProcessor bup = new BudgetProcessor();
 
-        public GroupController(IGroupProcessor groupProcessor, IUserProcessor userProcessor, IBudgetProcessor budgetProcessor)
-        {
-            grp = groupProcessor;
-            usp = userProcessor;
-            bup = budgetProcessor;
-        }
 
         [HttpPut("AddUserToGroup")]
         public IActionResult AddUserToGroup([FromBody] AddUserToGroupDTO data)
         {
-            foreach (var u in grp.getUsersOfGroup(data.groupId))
+            foreach (var u in grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId }))
             {
-                if (u.userEmail == data.userEmail)
+                if (u.Useremail == data.userEmail)
                 {
                     return BadRequest("User already in this group");
                 }
             }
             if (usp.getUserByUserEmail(data.userEmail) != null)
             {
-                grp.addUserToGroup(data.groupId, usp.getUserByUserEmail(data.userEmail).userId);
+                grp.AddUserToGroup(data);
                 return Ok("User added to group");
             }
 
@@ -56,19 +52,19 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpGet("GetGroups")]
         public IActionResult GetGroups(Users user)
         {
-            return Ok(grp.getUserGroups(user.userId));
+            return Ok(grp.GetGroups( new GetUserGroupsDTO { userId = user.Userid }));
         }
 
         [HttpGet("GetGroupUsers")]
         public IActionResult GetGroupUsers([FromBody] GroupIdDTO data)
         {
-            return Ok(grp.getUsersOfGroup(data.groupId));
+            return Ok(grp.GetGroupUsers(data));
         }
 
         [HttpDelete("RemoveGroup")]
         public IActionResult RemoveGroup([FromBody] GroupIdDTO data)
         {
-            grp.removeGroup(data.groupId);
+            grp.RemoveGroup(data);
             return Ok("Group removed");
         }
 
@@ -76,10 +72,10 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpDelete("RemoveUserFromGroup")]
         public IActionResult RemoveUserFromGroup([FromBody] RemoveUserFromGroupDTO data)
         {
-            grp.removeUserFromGroup(data.groupId, data.userId);
-            if (grp.getUsersOfGroup(data.groupId).Count == 0)
+            grp.RemoveUserFromGroup(data);
+            if (grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId}).Count == 0)
             {
-                grp.removeGroup(data.groupId);
+                grp.RemoveGroup(new GroupIdDTO { groupId = data.groupId});
             }
             return Ok("User removed from group");
         }
