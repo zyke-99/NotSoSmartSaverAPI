@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
-using NotSoSmartSaverWFA.Models;
+using NotSoSmartSaverAPI.DTO.BudgetDTO;
+using NotSoSmartSaverAPI.ModelsGenerated;
 
-namespace NotSoSmartSaverWFA.DataAccess
+namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IBudgetProcessor
     {
-        public Budget getBudget(string ownerId);
-        public List<Budget> getBudgets(string ownerId);
-
-        public void removeBudget(string budgetId);
-
-        public void modifyBudget(string ownerId, List<double> categoriesLimitValue);
-
-        public void createNewBudget(string ownerId);
+        public Budget getBudget(GetBudgetDTO data);
+        public bool modifyBudget(ModifyBudgetDTO data);
+        public bool createNewBudget(GetBudgetDTO data);
     }
 }

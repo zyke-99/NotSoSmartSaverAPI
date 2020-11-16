@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NotSoSmartSaverAPI.DTO.BudgetDTO;
 using NotSoSmartSaverWFA;
-using NotSoSmartSaverWFA.DataAccess;
-using NotSoSmartSaverWFA.Models;
+using NotSoSmartSaverAPI.Interfaces;
+using NotSoSmartSaverAPI.Processors;
+using NotSoSmartSaverAPI.ModelsGenerated;
 
 namespace NotSoSmartSaverAPI.Controllers
 {
@@ -28,7 +29,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public IActionResult GetValuesOfCategoryLimits([FromBody] GetBudgetDTO data)
         {
 
-            Budget budget = _budgetProcessor.getBudget(data.ownerId);
+            Budget budget = _budgetProcessor.getBudget(data);
             List<string> limits = new List<string>
             {
                 budget.Food.ToString(),
@@ -50,9 +51,7 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpPut("ModifyBudget")]
         public void modifyBudget([FromBody] ModifyBudgetDTO data)
         {
-            List<double> values = data.listOfValues.ToDoubleListWithoutNegatives();
-
-            _budgetProcessor.modifyBudget(data.ownerId, values);
+            _budgetProcessor.modifyBudget(data);
         }
     }
 }

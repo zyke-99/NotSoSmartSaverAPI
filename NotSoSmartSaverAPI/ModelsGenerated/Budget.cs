@@ -17,5 +17,6 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
         public float? Subscriptions { get; set; }
         public float? Goal { get; set; }
         public float? Other { get; set; }
+        public float? Clothes { get; set; }
     }
 }

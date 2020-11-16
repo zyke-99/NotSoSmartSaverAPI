@@ -69,6 +69,8 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
                 entity.Property(e => e.Subscriptions).HasColumnName("subscriptions");
 
                 entity.Property(e => e.Tobacco).HasColumnName("tobacco");
+
+                entity.Property(e => e.Clothes).HasColumnName("clothes");
             });
 
             modelBuilder.Entity<Expense>(entity =>

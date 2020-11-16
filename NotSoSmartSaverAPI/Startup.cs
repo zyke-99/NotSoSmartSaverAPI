@@ -10,9 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NotSoSmartSaverAPI.Interfaces;
+using NotSoSmartSaverAPI.Processors;
 using NotSoSmartSaverAPI.ModelsGenerated;
-using NotSoSmartSaverWFA.DataAccess;
-using NotSoSmartSaverWFA.DataAccess.DataValidation;
+using NotSoSmartSaverAPI.DataVerification;
+//using NotSoSmartSaverWFA.DataAccess;
+//using NotSoSmartSaverWFA.DataAccess.DataValidation;
 
 namespace NotSoSmartSaverAPI
 {
@@ -31,7 +34,7 @@ namespace NotSoSmartSaverAPI
             services.AddControllers();
             services.AddScoped<IIncomeProcessor, IncomeProcessor>();
             services.AddScoped<IGroupProcessor, GroupProcessor>();
-            services.AddScoped<IExpensesProcessor, ExpensesProcessor>();
+            services.AddScoped<IExpensesProcessor, ExpenseProcessor>();
             services.AddScoped<IBudgetProcessor, BudgetProcessor>();
             services.AddScoped<IGoalProcessor, GoalProcessor>();
             services.AddScoped<IUserProcessor, UserProcessor>();

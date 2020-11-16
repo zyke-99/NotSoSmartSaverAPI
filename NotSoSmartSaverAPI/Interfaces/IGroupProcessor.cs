@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NotSoSmartSaverWFA.DataAccess
+namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IGroupProcessor
     {
@@ -13,7 +13,7 @@ namespace NotSoSmartSaverWFA.DataAccess
 
         public bool CreateGroup(NewGroupDTO data);
 
-        //public List<Groups> GetGroups(User user); ---GALIMAI REIKIA NAUJO DTO, KURIS SAVYJE TURETU USERID
+        public List<Groups> GetGroups(GetUserGroupsDTO data);
         //BTW, TA DTO SAUGOT PRIE GroupsDTO ----- VISIEM MODELIAM TURI BUTI SKIRTINGI DTO FOLDERIAI
 
         public List<Users> GetGroupUsers(GroupIdDTO data);
@@ -22,7 +22,7 @@ namespace NotSoSmartSaverWFA.DataAccess
 
         public bool RemoveUserFromGroup(RemoveUserFromGroupDTO data);
 
-        public bool ModifyGroup(NewGroupDTO data);
+        public bool ModifyGroup(ModifyGroupDTO data);
 
     }
 }

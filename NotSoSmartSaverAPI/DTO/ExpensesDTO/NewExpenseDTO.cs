@@ -11,7 +11,7 @@ namespace NotSoSmartSaverAPI.DTO.ExpensesDTO
         public string userId { get; set; }
         public string ownerId { get; set; }
         public string expenseName { get; set; }
-        public double moneyUsed { get; set; }
+        public float moneyUsed { get; set; }
         public CategoryEnum expenseCategory { get; set; }
     }
 }

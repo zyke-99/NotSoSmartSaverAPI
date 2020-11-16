@@ -1,25 +1,27 @@
-﻿using NotSoSmartSaverWFA.DataAccess;
-using NotSoSmartSaverWFA.Models;
+﻿using NotSoSmartSaverAPI.DTO.ExpensesDTO;
+using NotSoSmartSaverAPI.DTO.IncomeDTO;
+using NotSoSmartSaverAPI.Interfaces;
+using NotSoSmartSaverAPI.ModelsGenerated;
+using NotSoSmartSaverAPI.Processors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace NotSoSmartSaverWFA
+namespace NotSoSmartSaverAPI
 {
     public class VeryTemporary
     {
-
-        public static double getMoney(User user, string ownerId)
+        private readonly IExpensesProcessor exc;
+        private readonly IIncomeProcessor inc;
+        public VeryTemporary (IExpensesProcessor expensesProcessor, IIncomeProcessor incomeProcessor)
         {
-            IExpensesProcessor exc = new ExpensesProcessor();
-            IIncomeProcessor inc = new IncomeProcessor();
-            var allExpenses = exc.getExpenses(ownerId);
-            var allIncomes = inc.getIncomes(ownerId);
-            var expensesSum = allExpenses.Sum(x => x.moneyUsed);
-            var incomesSum = allIncomes.Sum(x => x.moneyReceived);
-            return incomesSum - expensesSum;
+            exc = expensesProcessor;
+            inc = incomeProcessor;
+        }
+        public double getMoney(Users user, string ownerIdd)
+        { 
+           
         }
     }
 }
