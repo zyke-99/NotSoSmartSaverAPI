@@ -11,7 +11,11 @@ namespace NotSoSmartSaverAPI.Processors
 {
     public class ExpenseProcessor : IExpensesProcessor
     {
-        IUserProcessor usp = new UserProcessor();
+        private readonly IUserProcessor usp;
+        public ExpenseProcessor(IUserProcessor userProcessor)
+        {
+            usp = userProcessor;
+        }
         public bool AddExpense(NewExpenseDTO data)
         {
             var expense = new Expense
@@ -73,9 +77,11 @@ namespace NotSoSmartSaverAPI.Processors
                         sum += expense.Moneyused;
                     }
                 }
-                SumByCatDTO tuple = new SumByCatDTO();
-                tuple.category = Enum.GetName(typeof(CategoryEnum), e);
-                tuple.sum = sum;
+                SumByCatDTO tuple = new SumByCatDTO
+                {
+                    category = Enum.GetName(typeof(CategoryEnum), e),
+                    sum = sum
+                };
                 catSums.Add(tuple);
             }
             return catSums;

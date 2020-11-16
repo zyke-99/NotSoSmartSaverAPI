@@ -26,7 +26,8 @@ namespace NotSoSmartSaverAPI.Processors
                 Car = 0,
                 Subscriptions = 0,
                 Goal = 0,
-                Other = 0
+                Other = 0,
+                Clothes = 0
             };
             context.Budget.Add(budget);
             context.SaveChanges();

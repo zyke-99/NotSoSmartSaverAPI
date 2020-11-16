@@ -1,4 +1,6 @@
-﻿using NotSoSmartSaverAPI.DTO.UserDTO;
+﻿using Microsoft.EntityFrameworkCore;
+using NotSoSmartSaverAPI.DTO.BudgetDTO;
+using NotSoSmartSaverAPI.DTO.UserDTO;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
@@ -10,6 +12,12 @@ namespace NotSoSmartSaverAPI.Processors
 {
     public class UserProcessor : IUserProcessor
     {
+
+        private readonly IBudgetProcessor bup;
+        public UserProcessor (IBudgetProcessor budgetProcessor)
+        {
+            bup = budgetProcessor;
+        }
         public bool changeUserPassword(ChangePasswordDTO data)
         {
             NSSSContext context = new NSSSContext();
@@ -31,7 +39,16 @@ namespace NotSoSmartSaverAPI.Processors
                 Username = data.userName,
                 Userpassword = data.userPassword
             };
-            context.Users.Add(user);
+            try
+            {
+                context.Users.Add(user);
+                context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                return false;
+            }
+            bup.createNewBudget(new GetBudgetDTO { ownerId = user.Userid });
             context.SaveChanges();
             return true;
 

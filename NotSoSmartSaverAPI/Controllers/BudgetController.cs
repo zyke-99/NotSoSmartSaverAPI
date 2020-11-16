@@ -17,10 +17,11 @@ namespace NotSoSmartSaverAPI.Controllers
     [ApiController]
     public class BudgetController : ControllerBase
     {
-        private BudgetProcessor _budgetProcessor = new BudgetProcessor();
+        private readonly IBudgetProcessor _budgetProcessor;
 
-        public BudgetController()
+        public BudgetController(IBudgetProcessor budgetProcessor)
         {
+            _budgetProcessor = budgetProcessor;
         }
 
 

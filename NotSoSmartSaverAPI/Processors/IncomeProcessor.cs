@@ -13,7 +13,11 @@ namespace NotSoSmartSaverAPI.Processors
 {
     public class IncomeProcessor : IIncomeProcessor
     {
-        IUserProcessor usp = new UserProcessor();
+        private readonly IUserProcessor usp;
+        public IncomeProcessor (IUserProcessor userProcessor)
+        {
+            usp = userProcessor;
+        }
         public bool AddIncome(NewIncomeDTO data)
         {
 

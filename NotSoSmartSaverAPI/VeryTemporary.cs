@@ -12,26 +12,16 @@ namespace NotSoSmartSaverAPI
 {
     public class VeryTemporary
     {
-        public static double getMoney(Users user, string ownerIdd)
+        private readonly IExpensesProcessor exc;
+        private readonly IIncomeProcessor inc;
+        public VeryTemporary (IExpensesProcessor expensesProcessor, IIncomeProcessor incomeProcessor)
         {
-            IExpensesProcessor exc = new ExpenseProcessor();
-            IIncomeProcessor inc = new IncomeProcessor();
-            var allExpenses = exc.GetExpenses(new GetExpensesDTO
-            {
-                ownerId = ownerIdd,
-                maxNumberOfExpensesToShow = -1,
-                numberOfDaysToShow = -1
-
-            });
-            var allIncomes = inc.GetAllIncomes(new GetAllDTO
-            {
-                ownerId = ownerIdd,
-                maxNumberOfIncomesToShow = -1,
-                numberOfDaysToShow = -1
-            });
-            var expensesSum = allExpenses.Sum(x => x.Moneyused);
-            var incomesSum = allIncomes.Sum(x => x.Moneyrecieved);
-            return incomesSum - expensesSum;
+            exc = expensesProcessor;
+            inc = incomeProcessor;
+        }
+        public double getMoney(Users user, string ownerIdd)
+        { 
+           
         }
     }
 }

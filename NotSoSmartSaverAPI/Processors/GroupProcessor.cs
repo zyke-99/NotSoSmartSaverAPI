@@ -12,8 +12,14 @@ namespace NotSoSmartSaverAPI.Processors
 {
     public class GroupProcessor : IGroupProcessor
     {
-        IBudgetProcessor bup = new BudgetProcessor();
-        IUserProcessor usp = new UserProcessor();
+        private readonly IBudgetProcessor bup;
+        private readonly IUserProcessor usp;
+        public GroupProcessor (IBudgetProcessor budgetProcessor, IUserProcessor userProcessor)
+        {
+            bup = budgetProcessor;
+            usp = userProcessor;
+        }
+
         public bool AddUserToGroup(AddUserToGroupDTO data)
         {
             NSSSContext context = new NSSSContext();

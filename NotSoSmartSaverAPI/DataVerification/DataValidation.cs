@@ -1,4 +1,7 @@
-﻿using NotSoSmartSaverAPI.ModelsGenerated;
+﻿using NotSoSmartSaverAPI.DTO.ExpensesDTO;
+using NotSoSmartSaverAPI.DTO.IncomeDTO;
+using NotSoSmartSaverAPI.Interfaces;
+using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,29 +9,52 @@ using System.Threading.Tasks;
 
 namespace NotSoSmartSaverAPI.DataVerification
 {
-    public class DataValidation
+    public class DataValidation : IDataValidation
     {
-        public static bool isExpenseValid(Expense expense)
+        IExpensesProcessor exc;
+        IIncomeProcessor inc;
+
+        public DataValidation (IExpensesProcessor expensesProcessor, IIncomeProcessor incomeProcessor)
         {
-            return true;
+            exc = expensesProcessor;
+            inc = incomeProcessor;
+        }
+        public bool isExpenseValid(NewExpenseDTO expense)
+        {
+            var allExpenses = exc.GetExpenses(new GetExpensesDTO
+            {
+                ownerId = expense.ownerId,
+                maxNumberOfExpensesToShow = -1,
+                numberOfDaysToShow = -1
+
+            });
+            var allIncomes = inc.GetAllIncomes(new GetAllDTO
+            {
+                ownerId = expense.ownerId,
+                maxNumberOfIncomesToShow = -1,
+                numberOfDaysToShow = -1
+            });
+            var expensesSum = allExpenses.Sum(x => x.Moneyused);
+            var incomesSum = allIncomes.Sum(x => x.Moneyrecieved);
+            return incomesSum - expensesSum > expense.moneyUsed;
         }
 
-        public static bool isGoalValid(Goal goal)
-        {
-            return true;
-        }
-
-        public static bool isGroupValid(Groups group)
+        public bool isGoalValid(Goal goal)
         {
             throw new NotImplementedException();
         }
 
-        public static bool isIncomeValid(Income income)
+        public bool isGroupValid(Groups group)
         {
-            return true;
+            throw new NotImplementedException();
         }
 
-        public static bool isUserValid(Users user)
+        public bool isIncomeValid(Income income)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isUserValid(Users user)
         {
             throw new NotImplementedException();
         }

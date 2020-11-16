@@ -22,9 +22,16 @@ namespace NotSoSmartSaverAPI.Controllers
    
     public class IncomeController : ControllerBase
     {
-        IIncomeProcessor inp = new IncomeProcessor();
-        IUserProcessor usp = new UserProcessor();
-      //  IDataValidation dv;
+        private readonly IIncomeProcessor inp;
+        private readonly IUserProcessor usp;
+        private readonly IDataValidation dv;
+
+        public IncomeController(IIncomeProcessor incomeProcessor, IUserProcessor userProcessor, IDataValidation dataValidation)
+        {
+            inp = incomeProcessor;
+            usp = userProcessor;
+            dv = dataValidation;
+        }
 
 
 

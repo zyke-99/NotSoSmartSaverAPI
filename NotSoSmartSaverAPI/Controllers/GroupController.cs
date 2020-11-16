@@ -18,10 +18,16 @@ namespace NotSoSmartSaverAPI.Controllers
     {
 
 
-        IGroupProcessor grp = new GroupProcessor();
-        IUserProcessor usp = new UserProcessor();
-        IBudgetProcessor bup = new BudgetProcessor();
+        private readonly IGroupProcessor grp;
+        private readonly IUserProcessor usp;
+        private readonly IBudgetProcessor bup;
 
+        public GroupController(IGroupProcessor groupProcessor, IUserProcessor userProcessor, IBudgetProcessor budgetProcessor)
+        {
+            grp = groupProcessor;
+            usp = userProcessor;
+            bup = budgetProcessor;
+        }
 
         [HttpPut("AddUserToGroup")]
         public IActionResult AddUserToGroup([FromBody] AddUserToGroupDTO data)

@@ -8,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace NotSoSmartSaverAPI.DataVerification
 {
-    public class UserVerification
+    public class UserVerification : IUserVerification
     {
-        public static bool isUserVerified(Users user)
+        IUserProcessor usp;
+        public UserVerification (IUserProcessor userProcessor)
         {
-            IUserProcessor u = new UserProcessor();
-            Users tempUser = u.getUserByUserEmail(user.Useremail);
+            usp = userProcessor;
+        }
+        public bool isUserVerified(Users user)
+        {
+            
+            Users tempUser = usp.getUserByUserEmail(user.Useremail);
             if (tempUser == null) return false;
             else
             {

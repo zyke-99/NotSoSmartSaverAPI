@@ -10,6 +10,7 @@ using NotSoSmartSaverWFA;
 //using NotSoSmartSaverWFA.DataAccess;
 //using NotSoSmartSaverWFA.DataAccess.DataValidation;
 using NotSoSmartSaverAPI.Interfaces;
+using NotSoSmartSaverAPI.DataVerification;
 using NotSoSmartSaverAPI.Processors;
 using NotSoSmartSaverAPI.DTO.UserDTO;
 
@@ -20,10 +21,18 @@ namespace NotSoSmartSaverAPI.Controllers
     public class ExpensesController : ControllerBase
     {
 
-        IExpensesProcessor exp = new ExpenseProcessor();
-        IUserProcessor usp = new UserProcessor();
-       // IDataValidation dv;
 
+        private readonly IExpensesProcessor exp;
+        private readonly IUserProcessor usp;
+        private readonly IDataValidation dv;
+
+
+        public ExpensesController(IExpensesProcessor expensesProcessor, IUserProcessor userProcessor, IDataValidation dataValidation)
+        {
+            exp = expensesProcessor;
+            usp = userProcessor;
+            dv = dataValidation;
+        }
 
 
         [HttpPost]
