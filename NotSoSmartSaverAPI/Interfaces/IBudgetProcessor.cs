@@ -9,7 +9,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IBudgetProcessor
     {
-        public Budget getBudget(GetBudgetDTO data);
+        public List<SingleBudgetDTO> getBudget(GetBudgetDTO data);
         public bool modifyBudget(ModifyBudgetDTO data);
         public bool createNewBudget(GetBudgetDTO data);
     }

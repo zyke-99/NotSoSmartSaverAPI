@@ -39,13 +39,16 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpPost]
         public IActionResult AddExpense([FromBody] NewExpenseDTO data)
         {
+
             if (dv.isExpenseValid(data))
             {
-                exp.AddExpense(data);
-                return Ok("Expense added");
+                if (exp.AddExpense(data))
+                    return Ok("Expense added");
+                else
+                    BadRequest("Expense not added");
             }
 
-            return BadRequest("Expense not added");
+            return BadRequest("Expense is too big");
         }
 
         [HttpGet("GetExpenses")]

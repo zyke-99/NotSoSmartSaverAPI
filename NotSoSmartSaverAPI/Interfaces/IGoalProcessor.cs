@@ -16,5 +16,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public void addNewGoal(NewGoalDTO data);
 
+        public bool isCompleated(CompleteGoalDTO data);
+        public bool addMoneyToGoal(AddMoneyDTO data);
     }
 }
