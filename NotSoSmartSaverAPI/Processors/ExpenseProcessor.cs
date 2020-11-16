@@ -99,7 +99,7 @@ namespace NotSoSmartSaverAPI.Processors
                 GroupBy(e => e.Userid).
                 Select(ce => new SumByOwnerDTO
                 {
-                    userName = usp.getUserById(new UserIdDTO { userId = ce.First().Userid }).Username,
+                    userName = usp.GetUserById(new UserIdDTO { userId = ce.First().Userid }).Username,
                     sum = ce.Sum(e => e.Moneyused)
                 }).ToList();
             return modifiedExpenses;

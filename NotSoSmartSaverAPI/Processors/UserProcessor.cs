@@ -18,7 +18,7 @@ namespace NotSoSmartSaverAPI.Processors
         {
             bup = budgetProcessor;
         }
-        public bool changeUserPassword(ChangePasswordDTO data)
+        public bool ChangeUserPassword(ChangePasswordDTO data)
         {
             NSSSContext context = new NSSSContext();
             Users user = context.Users.Find(data.userId);
@@ -27,7 +27,7 @@ namespace NotSoSmartSaverAPI.Processors
             return true;
         }
 
-        public bool createNewUser(NewUserDTO data)
+        public bool CreateNewUser(NewUserDTO data)
         {
             NSSSContext context = new NSSSContext();
             Users user = new Users
@@ -54,20 +54,20 @@ namespace NotSoSmartSaverAPI.Processors
 
         }
 
-        public Users getUserById(UserIdDTO data)
+        public Users GetUserById(UserIdDTO data)
         {
             NSSSContext context = new NSSSContext();
             return context.Users.Find(data.userId);
 
         }
 
-        public Users getUserByUserEmail(string userEmail)
+        public Users GetUserByUserEmail(string userEmail)
         {
             NSSSContext context = new NSSSContext();
             return context.Users.First(a => a.Useremail == userEmail);
         }
 
-        public bool modifyUser(ModifyUserDTO data)
+        public bool ModifyUser(ModifyUserDTO data)
         {
             NSSSContext context = new NSSSContext();
             Users user = context.Users.Find(data.userId);
@@ -78,10 +78,10 @@ namespace NotSoSmartSaverAPI.Processors
             return true;
         }
 
-        public bool removeUser(UserIdDTO data)
+        public bool RemoveUser(string userId)
         {
             NSSSContext context = new NSSSContext();
-            context.Remove(context.Users.Find(data.userId));
+            context.Remove(context.Users.Find(userId));
             context.SaveChanges();
             return true;
         }

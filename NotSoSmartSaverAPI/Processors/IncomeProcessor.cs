@@ -25,7 +25,7 @@ namespace NotSoSmartSaverAPI.Processors
                 Incomeid = Guid.NewGuid().ToString(),
                 Ownerid = data.ownerId, 
                 Userid = data.userId, 
-                Moneyrecieved = data.moneyReceived, 
+                Moneyrecieved = (float) data.moneyReceived, 
                 Incometime = DateTime.Now, 
                 Incomename = data.incomeName};
             DbContext context = new NSSSContext();
@@ -71,7 +71,7 @@ namespace NotSoSmartSaverAPI.Processors
                 GroupBy(e => e.Userid).
                 Select(ce => new IncomeSumByOwnerDTO
                 {
-                    userName = usp.getUserById(new UserIdDTO { userId = ce.First().Userid } ).Username,
+                    userName = usp.GetUserById(new UserIdDTO { userId = ce.First().Userid } ).Username,
                     sum = ce.Sum(e => e.Moneyrecieved)
                 }).ToList();
             return modifiedIncomes;
@@ -82,7 +82,7 @@ namespace NotSoSmartSaverAPI.Processors
             NSSSContext context = new NSSSContext();
             var income = context.Income.First(a => a.Ownerid == data.ownerId);
             income.Incomename = data.incomeName;
-            income.Moneyrecieved = data.moneyReceived;
+            income.Moneyrecieved = (float )data.moneyReceived;
             context.SaveChanges();
             return true;
         }

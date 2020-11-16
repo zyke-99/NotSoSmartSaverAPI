@@ -26,7 +26,7 @@ namespace NotSoSmartSaverAPI.Processors
             context.Userandgroup.Add(new Userandgroup
             {
                 Groupid = data.groupId,
-                Userid = usp.getUserByUserEmail(data.userEmail).Userid
+                Userid = usp.GetUserByUserEmail(data.userEmail).Userid
             });
             context.SaveChanges();
             return true;
@@ -78,7 +78,7 @@ namespace NotSoSmartSaverAPI.Processors
             {
                 foreach (var tuple in tupleList)
                 {
-                    neededUsersList.Add(usp.getUserById(new UserIdDTO
+                    neededUsersList.Add(usp.GetUserById(new UserIdDTO
                     {
                         userId = tuple.Userid
                     }));

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotSoSmartSaverAPI.DTO.GroupsDTO;
-using NotSoSmartSaverWFA.DataAccess;
 using NotSoSmartSaverAPI.ModelsGenerated;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.Processors;
@@ -39,7 +38,7 @@ namespace NotSoSmartSaverAPI.Controllers
                     return BadRequest("User already in this group");
                 }
             }
-            if (usp.getUserByUserEmail(data.userEmail) != null)
+            if (usp.GetUserByUserEmail(data.userEmail) != null)
             {
                 grp.AddUserToGroup(data);
                 return Ok("User added to group");
@@ -49,11 +48,11 @@ namespace NotSoSmartSaverAPI.Controllers
 
         }
 
-        //public void createGroup(User user, Group group)
-        //{
-        //    grp.createNewGroup(user.userId, group.groupName);
-        //    bup.createNewBudget(group.groupId);
-        //}
+        public void createGroup(NewGroupDTO data)
+        {
+            grp.CreateGroup(data);
+
+        }
 
         [HttpGet("GetGroups")]
         public IActionResult GetGroups(Users user)
@@ -86,6 +85,14 @@ namespace NotSoSmartSaverAPI.Controllers
             return Ok("User removed from group");
         }
 
+
+        [HttpPut("ModifyGroup")]
+
+        public IActionResult ModifyGroup([FromBody] ModifyGroupDTO data)
+        {
+            grp.ModifyGroup(data);
+            return Ok("Group modified");
+        }
 
 
     }
