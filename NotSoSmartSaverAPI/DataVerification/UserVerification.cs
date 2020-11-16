@@ -1,4 +1,5 @@
-﻿using NotSoSmartSaverAPI.Interfaces;
+﻿using NotSoSmartSaverAPI.DTO.UserDTO;
+using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;
 using NotSoSmartSaverAPI.Processors;
 using System;
@@ -15,14 +16,14 @@ namespace NotSoSmartSaverAPI.DataVerification
         {
             usp = userProcessor;
         }
-        public bool isUserVerified(Users user)
+        public bool IsUserVerified(UserLoginDTO user)
         {
             
-            Users tempUser = usp.getUserByUserEmail(user.Useremail);
+            Users tempUser = usp.GetUserByUserEmail(user.email);
             if (tempUser == null) return false;
             else
             {
-                if (tempUser.Userpassword == user.Userpassword) return true;
+                if (tempUser.Userpassword == user.password) return true;
                 else return false;
             }
             //Should check if user is legit. To do so, use

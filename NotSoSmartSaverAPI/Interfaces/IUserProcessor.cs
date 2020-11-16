@@ -8,16 +8,16 @@ namespace NotSoSmartSaverAPI.Interfaces
 { 
     public interface IUserProcessor
     {
-        Users getUserByUserEmail(string userEmail);
+        Users GetUserByUserEmail(string userEmail);
 
-        Users getUserById(UserIdDTO data);
+        Users GetUserById(UserIdDTO data);
 
-        bool removeUser(UserIdDTO data);
+        bool RemoveUser(string userId);
 
-        bool modifyUser(ModifyUserDTO data);
+        bool ModifyUser(ModifyUserDTO data);
 
-        bool changeUserPassword(ChangePasswordDTO data);
+        bool ChangeUserPassword(ChangePasswordDTO data);
 
-        bool createNewUser(NewUserDTO data);
+        bool CreateNewUser(NewUserDTO data);
     }
 }

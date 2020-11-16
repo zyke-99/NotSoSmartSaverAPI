@@ -10,6 +10,6 @@ namespace NotSoSmartSaverAPI.DTO.IncomeDTO
         public string ownerId { get; set; }
         public string userId { get; set; }
         public string incomeName { get; set; }
-        public float moneyReceived { get; set; }
+        public double moneyReceived { get; set; }
     }
 }

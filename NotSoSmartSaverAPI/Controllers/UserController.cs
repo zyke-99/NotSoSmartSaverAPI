@@ -14,19 +14,50 @@ namespace NotSoSmartSaverAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserProcessor _userProcessor;
+        private readonly IUserVerification _userVerification;
 
-        public UserController(IUserProcessor userProcessor)
+        public UserController(IUserProcessor userProcessor, IUserVerification userVerification)
         {
             _userProcessor = userProcessor;
+            _userVerification = userVerification;
         }
 
         [HttpPost]
-        public IActionResult AddUser(NewUserDTO data)
+        public IActionResult AddUser([FromBody] NewUserDTO data)
         {
-            if (_userProcessor.createNewUser(data))
+            if (_userProcessor.CreateNewUser(data))
                 return Ok("User Added");
             else
                 return BadRequest("User with that email already exists!");
+        }
+
+
+        [HttpGet]
+        
+        public IActionResult UserLogin([FromBody] UserLoginDTO data)
+        {
+            if (_userVerification.IsUserVerified(data))
+            {
+                return Ok(_userProcessor.GetUserByUserEmail(data.email));
+            }
+            else return BadRequest("Failed to log in");
+        }
+
+        [HttpPut("ModifyUser")]
+        public IActionResult ModifyUser ([FromBody]ModifyUserDTO data)
+        {
+            _userProcessor.ModifyUser(data);
+            return Ok("User has been modified");
+        }
+
+
+        [HttpDelete("{userID}")]
+
+        public IActionResult RemoveUser(string userID)
+        {
+            _userProcessor.RemoveUser(userID);
+            return Ok("User removed");
+
         }
     }
 }
