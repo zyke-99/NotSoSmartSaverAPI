@@ -14,6 +14,7 @@ namespace NotSoSmartSaverAPI.Processors
     public class IncomeProcessor : IIncomeProcessor
     {
         private readonly IUserProcessor usp;
+
         public IncomeProcessor (IUserProcessor userProcessor)
         {
             usp = userProcessor;

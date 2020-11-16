@@ -116,14 +116,16 @@ namespace NotSoSmartSaverAPI.Processors
             return true;
         }
 
-        public bool isCompleated(CompleteGoalDTO data)
+        public bool CompleteGoal(string goalID)
         {
-            if (data.moneyRequired == data.moneyAllocated)
+            NSSSContext context = new NSSSContext();
+            Goal goal = context.Goal.First(x => x.Goalid == goalID);
+            if (goal.Moneyallocated == goal.Moneyrequired)
             {
-                removeGoal(data.goalId);
+                context.Goal.Remove(goal);
                 return true;
             }
-            return false;
+            else return false;
         }
     }
 }

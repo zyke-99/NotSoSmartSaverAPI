@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NotSoSmartSaverAPI.Interfaces
 {
-    interface IGoalProcessor
+    public interface IGoalProcessor
     {
         public List<Goal> getGoals(GetGoalsDTO data);
 
@@ -16,7 +16,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public void addNewGoal(NewGoalDTO data);
 
-        public bool isCompleated(CompleteGoalDTO data);
+        public bool CompleteGoal(string goalId);
         public bool addMoneyToGoal(AddMoneyDTO data);
     }
 }
