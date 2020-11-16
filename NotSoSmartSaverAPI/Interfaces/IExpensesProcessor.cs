@@ -1,4 +1,5 @@
 using NotSoSmartSaverAPI.DTO.ExpensesDTO;
+using NotSoSmartSaverAPI.DTO.UserDTO;
 using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace NotSoSmartSaverAPI.Interfaces
         public bool RemoveExpense(string expenseId);
 
         public bool ModifyExpense(NewExpenseDTO data);
+        public float getUserMoney(UserIdDTO data);
     }
 }

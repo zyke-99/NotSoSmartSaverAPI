@@ -34,10 +34,24 @@ namespace NotSoSmartSaverAPI.Processors
             return true;
         }
 
-        public Budget getBudget(GetBudgetDTO data)
+        public List<SingleBudgetDTO> getBudget(GetBudgetDTO data)
         {
             NSSSContext context = new NSSSContext();
-            return context.Budget.First(a => a.Ownerid == data.ownerId);
+            Budget budget = context.Budget.First(a => a.Ownerid == data.ownerId);
+            List<SingleBudgetDTO> listOfCategories = new List<SingleBudgetDTO>();
+            listOfCategories.Add(new SingleBudgetDTO { category = "Food", limit = budget.Food });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Leisure", limit = budget.Leisure });
+            listOfCategories.Add( new SingleBudgetDTO { category = "Rent", limit = budget.Rent });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Loan", limit = budget.Loan });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Alcohol", limit = budget.Alcohol });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Tobacco", limit = budget.Tobacco });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Insurance", limit = budget.Insurance });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Car", limit = budget.Car });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Subscriptions", limit = budget.Subscriptions });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Goal", limit = budget.Goal });
+            listOfCategories.Add(new SingleBudgetDTO { category = "Other", limit = budget.Other });
+            listOfCategories.Add( new SingleBudgetDTO { category = "Clothes", limit = budget.Clothes });
+            return listOfCategories;
         }
 
         public bool modifyBudget(ModifyBudgetDTO data)
@@ -55,6 +69,7 @@ namespace NotSoSmartSaverAPI.Processors
             budget.Subscriptions = float.Parse(data.listOfValues[8].Replace('.', ','));
             budget.Goal = float.Parse(data.listOfValues[9].Replace('.', ','));
             budget.Other = float.Parse(data.listOfValues[10].Replace('.', ','));
+            budget.Clothes = float.Parse(data.listOfValues[11].Replace('.', ','));
             context.SaveChanges();
             return true;
         }

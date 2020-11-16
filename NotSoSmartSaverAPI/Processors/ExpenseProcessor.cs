@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NotSoSmartSaverAPI.DTO.ExpensesDTO;
+using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.DTO.UserDTO;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;
@@ -12,9 +13,11 @@ namespace NotSoSmartSaverAPI.Processors
     public class ExpenseProcessor : IExpensesProcessor
     {
         private readonly IUserProcessor usp;
-        public ExpenseProcessor(IUserProcessor userProcessor)
+        private readonly IIncomeProcessor inc;
+        public ExpenseProcessor(IUserProcessor userProcessor, IIncomeProcessor incomeProcessor)
         {
             usp = userProcessor;
+            inc = incomeProcessor;
         }
         public bool AddExpense(NewExpenseDTO data)
         {
@@ -103,6 +106,29 @@ namespace NotSoSmartSaverAPI.Processors
                     sum = ce.Sum(e => e.Moneyused)
                 }).ToList();
             return modifiedExpenses;
+        }
+
+        public float getUserMoney(UserIdDTO data)
+        {
+           
+            
+                var allExpenses = GetExpenses(new GetExpensesDTO
+                {
+                    ownerId = data.userId,
+                    maxNumberOfExpensesToShow = -1,
+                    numberOfDaysToShow = -1
+
+                });
+                var allIncomes = inc.GetAllIncomes(new GetAllDTO
+                {
+                    ownerId = data.userId,
+                    maxNumberOfIncomesToShow = -1,
+                    numberOfDaysToShow = -1
+                });
+                var expensesSum = allExpenses.Sum(x => x.Moneyused);
+                var incomesSum = allIncomes.Sum(x => x.Moneyrecieved);
+                return incomesSum - expensesSum;
+            
         }
 
         public bool ModifyExpense(NewExpenseDTO data)

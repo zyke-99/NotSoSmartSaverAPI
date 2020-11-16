@@ -38,13 +38,15 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpPost]
         public IActionResult AddExpense([FromBody] NewExpenseDTO data)
         {
-            if (VeryTemporary.getMoney(usp.getUserById(new UserIdDTO { userId = data.userId}), data.ownerId) >= data.moneyUsed)// && user.userMoney >= expense.moneyUsed)
+            if (dv.isExpenseValid(data))// && user.userMoney >= expense.moneyUsed)
             {
-                exp.AddExpense(data);
-                return Ok("Expense added");
+                if (exp.AddExpense(data))
+                    return Ok("Expense added");
+                else
+                    BadRequest("Expense not added");
             }
 
-            return BadRequest("Expense not added");
+            return BadRequest("Expense is too big");
         }
 
         [HttpGet("GetExpenses")]

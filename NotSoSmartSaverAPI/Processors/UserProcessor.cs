@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotSoSmartSaverAPI.DTO.BudgetDTO;
+using NotSoSmartSaverAPI.DTO.ExpensesDTO;
+using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.DTO.UserDTO;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;

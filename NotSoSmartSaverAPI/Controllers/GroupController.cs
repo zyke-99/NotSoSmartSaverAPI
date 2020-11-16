@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotSoSmartSaverAPI.DTO.GroupsDTO;
-using NotSoSmartSaverWFA.DataAccess;
 using NotSoSmartSaverAPI.ModelsGenerated;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.Processors;
