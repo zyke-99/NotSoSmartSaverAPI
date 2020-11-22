@@ -48,35 +48,41 @@ namespace NotSoSmartSaverAPI.Controllers
 
         }
 
-        public void createGroup(NewGroupDTO data)
+        [HttpPost]
+        public IActionResult createGroup(NewGroupDTO data)
         {
-            grp.CreateGroup(data);
+
+            if (grp.CreateGroup(data)) return Ok("Group created");
+            else return BadRequest("Group not created");
 
         }
 
-        [HttpGet("GetGroups")]
-        public IActionResult GetGroups(Users user)
+        [HttpGet("GetGroups/{userId}")]
+        public IActionResult GetGroups(string userId)
         {
-            return Ok(grp.GetGroups( new GetUserGroupsDTO { userId = user.Userid }));
+            return Ok(grp.GetGroups( new GetUserGroupsDTO { userId = userId }));
         }
 
-        [HttpGet("GetGroupUsers")]
-        public IActionResult GetGroupUsers([FromBody] GroupIdDTO data)
+        [HttpGet("GetGroupUsers/{groupId}")]
+        public IActionResult GetGroupUsers(string groupId)
         {
+            GroupIdDTO data = new GroupIdDTO { groupId = groupId };
             return Ok(grp.GetGroupUsers(data));
         }
 
-        [HttpDelete("RemoveGroup")]
-        public IActionResult RemoveGroup([FromBody] GroupIdDTO data)
+        [HttpDelete("RemoveGroup/{groupId}")]
+        public IActionResult RemoveGroup(string groupId)
         {
+            GroupIdDTO data = new GroupIdDTO { groupId = groupId };
             grp.RemoveGroup(data);
             return Ok("Group removed");
         }
 
 
-        [HttpDelete("RemoveUserFromGroup")]
-        public IActionResult RemoveUserFromGroup([FromBody] RemoveUserFromGroupDTO data)
+        [HttpDelete("RemoveUserFromGroup/{userId}&{groupId}")]
+        public IActionResult RemoveUserFromGroup(string userId, string groupId)
         {
+            RemoveUserFromGroupDTO data = new RemoveUserFromGroupDTO { userId = userId, groupId = groupId };
             grp.RemoveUserFromGroup(data);
             if (grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId}).Count == 0)
             {

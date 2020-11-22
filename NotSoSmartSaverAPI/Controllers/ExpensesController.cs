@@ -51,22 +51,25 @@ namespace NotSoSmartSaverAPI.Controllers
             return BadRequest("Expense is too big");
         }
 
-        [HttpGet("GetExpenses")]
-        public IActionResult GetExpenses([FromBody] GetExpensesDTO data)
+        [HttpGet("GetExpenses/{ownerId}&{numberOfDaysToShow}&{maxNumberOfExpensesToShow}")]
+        public IActionResult GetExpenses(string ownerId, int numberOfDaysToShow, int maxNumberOfExpensesToShow)
         {
+            GetExpensesDTO data = new GetExpensesDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow, maxNumberOfExpensesToShow = maxNumberOfExpensesToShow };
             return Ok(exp.GetExpenses(data));
         }
 
 
-        [HttpGet("GetSumOfExpensesByCategory")]
-        public IActionResult GetSumOfExpensesByCategory([FromBody] ExpensesByOwnerDTO data)
+        [HttpGet("GetSumOfExpensesByCategory/{ownerId}&{numberOfDaysToShow}")]
+        public IActionResult GetSumOfExpensesByCategory(string ownerId, int numberOfDaysToShow)
         {
+            ExpensesByOwnerDTO data = new ExpensesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
             return Ok(exp.GetSumOfExpensesByCategory(data));
         }
 
-        [HttpGet("GetSumOfExpensesByOwner")]
-        public IActionResult GetSumOfExpensesByOwner([FromBody] ExpensesByOwnerDTO data)
+        [HttpGet("GetSumOfExpensesByOwner/{ownerId}&{numberOfDaysToShow}")]
+        public IActionResult GetSumOfExpensesByOwner(string ownerId, int numberOfDaysToShow)
         {
+            ExpensesByOwnerDTO data = new ExpensesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
             return Ok(exp.GetSumOfExpensesByOwner(data));
         }
 

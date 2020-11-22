@@ -25,9 +25,10 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
 
-        [HttpGet("GetValuesOfCategoryLimits")]
-        public IActionResult GetValuesOfCategoryLimits([FromBody] GetBudgetDTO data)
+        [HttpGet("GetValuesOfCategoryLimits/{ownerId}")]
+        public IActionResult GetValuesOfCategoryLimits(string ownerId)
         {
+            GetBudgetDTO data = new GetBudgetDTO {ownerId = ownerId};
             List<SingleBudgetDTO> limits = _budgetProcessor.getBudget(data);
             return Ok(limits);
         }
