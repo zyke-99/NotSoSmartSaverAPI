@@ -23,8 +23,9 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpGet]
-        public IActionResult GetGoals([FromBody]GetGoalsDTO data)
+        public IActionResult GetGoals(string ownerId)
         {
+            GetGoalsDTO data = new GetGoalsDTO { ownerId = ownerId };
             return Ok(_goalProcessor.getGoals(data));
         }
 
@@ -63,7 +64,7 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpPut("AddMoneyToGoal")]
-        public IActionResult AddMoneyToGoal(AddMoneyDTO data)
+        public IActionResult AddMoneyToGoal([FromBody]AddMoneyDTO data)
         {
             _goalProcessor.addMoneyToGoal(data);
             return Ok("Money added");

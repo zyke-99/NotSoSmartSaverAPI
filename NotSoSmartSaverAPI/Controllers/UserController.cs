@@ -34,8 +34,9 @@ namespace NotSoSmartSaverAPI.Controllers
 
         [HttpGet]
         
-        public IActionResult UserLogin([FromBody] UserLoginDTO data)
+        public IActionResult UserLogin( string email, string password)
         {
+            UserLoginDTO data = new UserLoginDTO { email = email, password = password };
             if (_userVerification.IsUserVerified(data))
             {
                 return Ok(_userProcessor.GetUserByUserEmail(data.email));

@@ -44,6 +44,8 @@ namespace NotSoSmartSaverAPI
                 .AddDbContext<NSSSContext>()
                 .BuildServiceProvider();
 
+            services.AddSwaggerDocument();
+
 
         }
 
@@ -65,6 +67,9 @@ namespace NotSoSmartSaverAPI
             {
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }
