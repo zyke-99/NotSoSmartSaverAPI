@@ -39,9 +39,12 @@ namespace NotSoSmartSaverAPI
             services.AddScoped<IGoalProcessor, GoalProcessor>();
             services.AddScoped<IUserProcessor, UserProcessor>();
             services.AddScoped<IDataValidation, DataValidation>();
+            services.AddScoped<IUserVerification, UserVerification>();
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<NSSSContext>()
                 .BuildServiceProvider();
+
+            services.AddSwaggerDocument();
 
 
         }
@@ -64,6 +67,9 @@ namespace NotSoSmartSaverAPI
             {
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }

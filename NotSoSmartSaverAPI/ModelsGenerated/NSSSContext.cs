@@ -75,7 +75,7 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
 
             modelBuilder.Entity<Expense>(entity =>
             {
-                entity.HasKey(e => e.Ownerid)
+                entity.HasKey(e => e.Expenseid)
                     .HasName("expense_pkey");
 
                 entity.ToTable("expense");
@@ -110,7 +110,7 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
 
             modelBuilder.Entity<Goal>(entity =>
             {
-                entity.HasKey(e => e.Ownerid)
+                entity.HasKey(e => e.Goalid)
                     .HasName("goal_pkey");
 
                 entity.ToTable("goal");
@@ -155,7 +155,7 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
 
             modelBuilder.Entity<Income>(entity =>
             {
-                entity.HasKey(e => e.Ownerid)
+                entity.HasKey(e => e.Incomeid)
                     .HasName("income_pkey");
 
                 entity.ToTable("income");
@@ -186,8 +186,6 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
 
             modelBuilder.Entity<Userandgroup>(entity =>
             {
-                entity.HasKey(e => e.Groupid)
-                    .HasName("userandgroup_pkey");
 
                 entity.ToTable("userandgroup");
 

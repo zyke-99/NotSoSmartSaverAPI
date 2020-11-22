@@ -36,15 +36,17 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpGet("GetAllIncomes")]
-        public IActionResult GetAllIncomes([FromBody] GetAllDTO data)
+        public IActionResult GetAllIncomes(string ownerId, int numberOfDaysToShow, int maxNumberOfIncomesToShow)
         {
+            GetAllDTO data = new GetAllDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow, maxNumberOfIncomesToShow = maxNumberOfIncomesToShow };
             return Ok(inp.GetAllIncomes(data));
         }
 
 
         [HttpGet("GetSumOfIncomesByOwner")]
-        public IActionResult GetSumOfIncomesByOwner([FromBody] IncomesByOwnerDTO data)
+        public IActionResult GetSumOfIncomesByOwner(string ownerId, int numberOfDaysToShow)
         {
+            IncomesByOwnerDTO data = new IncomesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
             return Ok(inp.GetSumOfIncomesByOwner(data));
         }
 
@@ -67,7 +69,7 @@ namespace NotSoSmartSaverAPI.Controllers
 
         [HttpPut]
 
-        public IActionResult ModifyIncome(NewIncomeDTO data)
+        public IActionResult ModifyIncome([FromBody]NewIncomeDTO data)
         {
             inp.ModifyIncome(data);
             return Ok("Income modified");
