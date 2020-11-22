@@ -25,7 +25,7 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
 
-        [HttpGet("GetValuesOfCategoryLimits/{ownerId}")]
+        [HttpGet("GetValuesOfCategoryLimits")]
         public IActionResult GetValuesOfCategoryLimits(string ownerId)
         {
             GetBudgetDTO data = new GetBudgetDTO {ownerId = ownerId};

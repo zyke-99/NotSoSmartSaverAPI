@@ -57,13 +57,13 @@ namespace NotSoSmartSaverAPI.Controllers
 
         }
 
-        [HttpGet("GetGroups/{userId}")]
+        [HttpGet("GetGroups")]
         public IActionResult GetGroups(string userId)
         {
             return Ok(grp.GetGroups( new GetUserGroupsDTO { userId = userId }));
         }
 
-        [HttpGet("GetGroupUsers/{groupId}")]
+        [HttpGet("GetGroupUsers")]
         public IActionResult GetGroupUsers(string groupId)
         {
             GroupIdDTO data = new GroupIdDTO { groupId = groupId };
