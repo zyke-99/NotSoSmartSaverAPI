@@ -1,4 +1,4 @@
-﻿using NotSoSmartSaverAPI.DTO.ExpensesDTO;
+using NotSoSmartSaverAPI.DTO.ExpensesDTO;
 using NotSoSmartSaverAPI.DTO.GoalDTO;
 using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.DTO.UserDTO;
@@ -17,6 +17,7 @@ namespace NotSoSmartSaverAPI.Processors
     {
         private readonly IIncomeProcessor _incomeProcessor;
         private readonly IExpensesProcessor _expensesProcessor;
+        NSSSContext context = new NSSSContext();
         public GoalProcessor(IIncomeProcessor incomeProcessor, IExpensesProcessor expensesProcessor)
         {
             _incomeProcessor = incomeProcessor;
@@ -24,7 +25,6 @@ namespace NotSoSmartSaverAPI.Processors
         }
         public void addNewGoal(NewGoalDTO data)
         {
-            NSSSContext context = new NSSSContext();
             var newGoal = new Goal
             {
                 Goalid = Guid.NewGuid().ToString(),
@@ -40,14 +40,12 @@ namespace NotSoSmartSaverAPI.Processors
 
         public List<Goal> getGoals(GetGoalsDTO data)
         {
-            NSSSContext context = new NSSSContext();
             var listOfGoals = context.Goal.Where(a => a.Ownerid == data.ownerId).ToList();
             return listOfGoals;
         }
 
         public bool modifyGoal(ModifyGoalDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Goal goal = context.Goal.First(a => a.Goalid == data.goalId);
             goal.Goalname = data.newGoalName;
             goal.Moneyrequired = data.newMoneyRequired;
@@ -58,7 +56,6 @@ namespace NotSoSmartSaverAPI.Processors
         }
         public bool modifyAllocatedMoney(ModifyAllocatedMoneyDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Goal goal = context.Goal.First(a => a.Goalid == data.goalId);
             goal.Moneyallocated = data.newAllocatedMoney;
             context.SaveChanges();
@@ -101,7 +98,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool removeGoal(string goalId)
         {
-            NSSSContext context = new NSSSContext();
             Goal goal = context.Goal.Single(a => a.Goalid == goalId);
             context.Remove(goal);
             context.SaveChanges();
@@ -118,7 +114,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool CompleteGoal(string goalID)
         {
-            NSSSContext context = new NSSSContext();
             Goal goal = context.Goal.First(x => x.Goalid == goalID);
             if (goal.Moneyallocated == goal.Moneyrequired)
             {
@@ -129,3 +124,4 @@ namespace NotSoSmartSaverAPI.Processors
         }
     }
 }
+
