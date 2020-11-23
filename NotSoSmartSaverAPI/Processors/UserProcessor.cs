@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NotSoSmartSaverAPI.DTO.BudgetDTO;
 using NotSoSmartSaverAPI.DTO.ExpensesDTO;
 using NotSoSmartSaverAPI.DTO.IncomeDTO;
@@ -16,13 +16,13 @@ namespace NotSoSmartSaverAPI.Processors
     {
 
         private readonly IBudgetProcessor bup;
+        NSSSContext context = new NSSSContext();
         public UserProcessor (IBudgetProcessor budgetProcessor)
         {
             bup = budgetProcessor;
         }
         public bool ChangeUserPassword(ChangePasswordDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Users user = context.Users.Find(data.userId);
             user.Userpassword = data.userNewPassword;
             context.SaveChanges();
@@ -31,7 +31,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool CreateNewUser(NewUserDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Users user = new Users
             {
                 Userid = Guid.NewGuid().ToString(),
@@ -58,20 +57,17 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Users GetUserById(UserIdDTO data)
         {
-            NSSSContext context = new NSSSContext();
             return context.Users.Find(data.userId);
 
         }
 
         public Users GetUserByUserEmail(string userEmail)
         {
-            NSSSContext context = new NSSSContext();
             return context.Users.First(a => a.Useremail == userEmail);
         }
 
         public bool ModifyUser(ModifyUserDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Users user = context.Users.Find(data.userId);
             user.Useremail = data.newUserEmail;
             user.Username = data.newUserName;
@@ -82,10 +78,10 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool RemoveUser(string userId)
         {
-            NSSSContext context = new NSSSContext();
             context.Remove(context.Users.Find(userId));
             context.SaveChanges();
             return true;
         }
     }
 }
+
