@@ -1,4 +1,4 @@
-﻿using NotSoSmartSaverAPI.DTO.BudgetDTO;
+using NotSoSmartSaverAPI.DTO.BudgetDTO;
 using NotSoSmartSaverAPI.DTO.GroupsDTO;
 using NotSoSmartSaverAPI.DTO.UserDTO;
 using NotSoSmartSaverAPI.Interfaces;
@@ -14,6 +14,9 @@ namespace NotSoSmartSaverAPI.Processors
     {
         private readonly IBudgetProcessor bup;
         private readonly IUserProcessor usp;
+
+        NSSSContext context = new NSSSContext();
+
         public GroupProcessor (IBudgetProcessor budgetProcessor, IUserProcessor userProcessor)
         {
             bup = budgetProcessor;
@@ -22,7 +25,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool AddUserToGroup(AddUserToGroupDTO data)
         {
-            NSSSContext context = new NSSSContext();
             context.Userandgroup.Add(new Userandgroup
             {
                 Groupid = data.groupId,
@@ -34,7 +36,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool CreateGroup(NewGroupDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Groups group = new Groups
             {
                 Groupid = Guid.NewGuid().ToString(),
@@ -56,7 +57,6 @@ namespace NotSoSmartSaverAPI.Processors
         public List<Groups> GetGroups(GetUserGroupsDTO data)
         {
             List<Groups> neededGroupList = new List<Groups>();
-            NSSSContext context = new NSSSContext();
             List<Userandgroup> tupleList = context.Userandgroup.Where(x => x.Userid == data.userId).ToList();
             List<Groups> groupsList = context.Groups.ToList();
             if (tupleList != null)
@@ -71,7 +71,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public List<Users> GetGroupUsers(GroupIdDTO data)
         {
-            NSSSContext context = new NSSSContext();
             List<Users> neededUsersList = new List<Users>();
             List<Userandgroup> tupleList = context.Userandgroup.Where(a => a.Groupid == data.groupId).ToList();
             if (tupleList != null)
@@ -89,7 +88,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool ModifyGroup(ModifyGroupDTO data)
         {
-            NSSSContext context = new NSSSContext();
             Groups group = context.Groups.Find(data.groupId);
             group.Groupname = data.newName;
             context.SaveChanges();
@@ -98,7 +96,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool RemoveGroup(GroupIdDTO data)
         {
-            NSSSContext context = new NSSSContext();
             context.Remove(context.Groups.Find(data.groupId));
             context.RemoveRange(context.Userandgroup.Where(x => x.Groupid == data.groupId));
             context.SaveChanges();
@@ -107,10 +104,10 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool RemoveUserFromGroup(RemoveUserFromGroupDTO data)
         {
-            NSSSContext context = new NSSSContext();
             context.Userandgroup.Remove(context.Userandgroup.First(a => a.Userid == data.userId && a.Groupid == data.groupId));
             context.SaveChanges();
             return true;
         }
     }
 }
+
