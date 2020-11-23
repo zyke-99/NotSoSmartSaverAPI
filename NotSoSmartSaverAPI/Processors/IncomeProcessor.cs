@@ -1,4 +1,4 @@
-﻿using NotSoSmartSaverAPI.DTO.IncomeDTO;
+using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.ModelsGenerated;
 //using NotSoSmartSaverWFA.DataAccess;
 using NotSoSmartSaverAPI.Interfaces;
@@ -14,6 +14,7 @@ namespace NotSoSmartSaverAPI.Processors
     public class IncomeProcessor : IIncomeProcessor
     {
         private readonly IUserProcessor usp;
+        NSSSContext context = new NSSSContext();
 
         public IncomeProcessor (IUserProcessor userProcessor)
         {
@@ -29,7 +30,6 @@ namespace NotSoSmartSaverAPI.Processors
                 Moneyrecieved = (float) data.moneyReceived, 
                 Incometime = DateTime.Now, 
                 Incomename = data.incomeName};
-            DbContext context = new NSSSContext();
             context.Add(newIncome);
             context.SaveChanges();
             return true;
@@ -37,7 +37,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public List<Income> GetAllIncomes(GetAllDTO data)
         {
-            NSSSContext context = new NSSSContext();
             List<Income> listOfIncomes;
             if (data.numberOfDaysToShow < 0)
             {
@@ -80,7 +79,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool ModifyIncome(NewIncomeDTO data)
         {
-            NSSSContext context = new NSSSContext();
             var income = context.Income.First(a => a.Ownerid == data.ownerId);
             income.Incomename = data.incomeName;
             income.Moneyrecieved = (float )data.moneyReceived;
@@ -90,10 +88,10 @@ namespace NotSoSmartSaverAPI.Processors
 
         public bool RemoveIncome(string incomeId)
         {
-            NSSSContext context = new NSSSContext();
             context.Remove(context.Income.Single(a => a.Incomeid == incomeId));
             context.SaveChanges();
             return true;
         }
     }
 }
+
