@@ -81,7 +81,7 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpPut("ModifyExpense")]
-        public IActionResult ModifyExpense ([FromBody] NewExpenseDTO data)
+        public IActionResult ModifyExpense ([FromBody] ModifyExpenseDTO data)
         {
             return Ok(exp.ModifyExpense(data));
         }

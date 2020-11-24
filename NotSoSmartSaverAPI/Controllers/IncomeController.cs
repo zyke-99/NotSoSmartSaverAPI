@@ -69,7 +69,7 @@ namespace NotSoSmartSaverAPI.Controllers
 
         [HttpPut]
 
-        public IActionResult ModifyIncome([FromBody]NewIncomeDTO data)
+        public IActionResult ModifyIncome([FromBody]ModifyIncomeDTO data)
         {
             inp.ModifyIncome(data);
             return Ok("Income modified");

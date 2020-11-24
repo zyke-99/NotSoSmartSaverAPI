@@ -78,10 +78,10 @@ namespace NotSoSmartSaverAPI.Processors
             return modifiedIncomes;
         }
 
-        public bool ModifyIncome(NewIncomeDTO data)
+        public bool ModifyIncome(ModifyIncomeDTO data)
         {
             NSSSContext context = new NSSSContext();
-            var income = context.Income.First(a => a.Ownerid == data.ownerId);
+            var income = context.Income.First(a => a.Incomeid == data.incomeId);
             income.Incomename = data.incomeName;
             income.Moneyrecieved = (float )data.moneyReceived;
             context.SaveChanges();

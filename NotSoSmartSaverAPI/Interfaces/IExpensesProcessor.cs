@@ -20,7 +20,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public bool RemoveExpense(string expenseId);
 
-        public bool ModifyExpense(NewExpenseDTO data);
+        public bool ModifyExpense(ModifyExpenseDTO data);
         public float getUserMoney(UserIdDTO data);
     }
 }
