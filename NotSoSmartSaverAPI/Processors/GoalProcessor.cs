@@ -36,6 +36,7 @@ namespace NotSoSmartSaverAPI.Processors
                 Goalname = data.goalName
             };
             context.Goal.Add(newGoal);
+            context.SaveChanges();
         }
 
         public List<Goal> getGoals(GetGoalsDTO data)
@@ -123,6 +124,7 @@ namespace NotSoSmartSaverAPI.Processors
             if (goal.Moneyallocated == goal.Moneyrequired)
             {
                 context.Goal.Remove(goal);
+                context.SaveChanges();
                 return true;
             }
             else return false;
