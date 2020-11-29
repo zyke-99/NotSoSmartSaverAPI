@@ -23,9 +23,9 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser([FromBody] NewUserDTO data)
+        public async Task<IActionResult> AddUser([FromBody] NewUserDTO data)
         {
-            if (_userProcessor.CreateNewUser(data))
+            if (await Task.Run(() => _userProcessor.CreateNewUser(data)))
                 return Ok("User Added");
             else
                 return BadRequest("User with that email already exists!");
@@ -34,29 +34,29 @@ namespace NotSoSmartSaverAPI.Controllers
 
         [HttpGet]
         
-        public IActionResult UserLogin( string email, string password)
+        public async Task<IActionResult> UserLogin( string email, string password)
         {
             UserLoginDTO data = new UserLoginDTO { email = email, password = password };
-            if (_userVerification.IsUserVerified(data))
+            if (_userVerification.IsUserVerifiedAsync(data))
             {
-                return Ok(_userProcessor.GetUserByUserEmail(data.email));
+                return Ok(Task.Run(() => _userProcessor.GetUserByUserEmail(data.email)));
             }
             else return BadRequest("Failed to log in");
         }
 
         [HttpPut("ModifyUser")]
-        public IActionResult ModifyUser ([FromBody]ModifyUserDTO data)
+        public async Task<IActionResult> ModifyUser ([FromBody]ModifyUserDTO data)
         {
-            _userProcessor.ModifyUser(data);
+            await Task.Run(() => _userProcessor.ModifyUser(data));
             return Ok("User has been modified");
         }
 
 
         [HttpDelete("{userID}")]
 
-        public IActionResult RemoveUser(string userID)
+        public async Task<IActionResult> RemoveUser(string userID)
         {
-            _userProcessor.RemoveUser(userID);
+            await Task.Run(() => _userProcessor.RemoveUser(userID));
             return Ok("User removed");
 
         }

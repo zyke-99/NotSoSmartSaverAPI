@@ -26,17 +26,17 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpGet("GetValuesOfCategoryLimits")]
-        public IActionResult GetValuesOfCategoryLimits(string ownerId)
+        public async Task<IActionResult> GetValuesOfCategoryLimits(string ownerId)
         {
             GetBudgetDTO data = new GetBudgetDTO {ownerId = ownerId};
-            List<SingleBudgetDTO> limits = _budgetProcessor.getBudget(data);
+            List<SingleBudgetDTO> limits = await _budgetProcessor.getBudget(data);
             return Ok(limits);
         }
 
         [HttpPut("ModifyBudget")]
-        public void modifyBudget([FromBody] ModifyBudgetDTO data)
+        public async Task modifyBudget([FromBody] ModifyBudgetDTO data)
         {
-            _budgetProcessor.modifyBudget(data);
+            await Task.Run(() => _budgetProcessor.modifyBudget(data));
         }
     }
 }

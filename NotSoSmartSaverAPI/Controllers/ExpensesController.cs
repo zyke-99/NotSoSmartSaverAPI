@@ -37,12 +37,11 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpPost]
-        public IActionResult AddExpense([FromBody] NewExpenseDTO data)
+        public async Task<IActionResult> AddExpense([FromBody] NewExpenseDTO data)
         {
-
-            if (dv.isExpenseValid(data))
+            if (await Task.Run(() => dv.isExpenseValidAsync(data)))
             {
-                if (exp.AddExpense(data))
+                if (await Task.Run(() => exp.AddExpense(data)))
                     return Ok("Expense added");
                 else
                     BadRequest("Expense not added");
@@ -52,38 +51,38 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpGet("GetExpenses")]
-        public IActionResult GetExpenses(string ownerId, int numberOfDaysToShow, int maxNumberOfExpensesToShow)
+        public async Task<IActionResult> GetExpenses(string ownerId, int numberOfDaysToShow, int maxNumberOfExpensesToShow)
         {
             GetExpensesDTO data = new GetExpensesDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow, maxNumberOfExpensesToShow = maxNumberOfExpensesToShow };
-            return Ok(exp.GetExpenses(data));
+            return Ok(Task.Run(() => exp.GetExpenses(data)));
         }
 
 
         [HttpGet("GetSumOfExpensesByCategory")]
-        public IActionResult GetSumOfExpensesByCategory(string ownerId, int numberOfDaysToShow)
+        public async Task<IActionResult> GetSumOfExpensesByCategory(string ownerId, int numberOfDaysToShow)
         {
             ExpensesByOwnerDTO data = new ExpensesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
-            return Ok(exp.GetSumOfExpensesByCategory(data));
+            return Ok(Task.Run(() => exp.GetSumOfExpensesByCategory(data)));
         }
 
         [HttpGet("GetSumOfExpensesByOwner")]
-        public IActionResult GetSumOfExpensesByOwner(string ownerId, int numberOfDaysToShow)
+        public async Task<IActionResult> GetSumOfExpensesByOwner(string ownerId, int numberOfDaysToShow)
         {
             ExpensesByOwnerDTO data = new ExpensesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
-            return Ok(exp.GetSumOfExpensesByOwner(data));
+            return Ok(Task.Run(() => exp.GetSumOfExpensesByOwner(data)));
         }
 
         [HttpDelete("{expenseID}")]
-        public IActionResult RemoveExpense (string expenseID)
+        public async Task<IActionResult> RemoveExpense (string expenseID)
         {
-            exp.RemoveExpense(expenseID);
+            await Task.Run(() => exp.RemoveExpense(expenseID));
             return Ok("Expense removed");
         }
 
         [HttpPut("ModifyExpense")]
-        public IActionResult ModifyExpense ([FromBody] NewExpenseDTO data)
+        public async Task<IActionResult> ModifyExpense ([FromBody] NewExpenseDTO data)
         {
-            return Ok(exp.ModifyExpense(data));
+            return Ok(Task.Run(() => exp.ModifyExpense(data)));
         }
 
     }

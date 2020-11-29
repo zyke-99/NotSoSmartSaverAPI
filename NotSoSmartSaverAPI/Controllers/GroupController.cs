@@ -29,9 +29,9 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpPut("AddUserToGroup")]
-        public IActionResult AddUserToGroup([FromBody] AddUserToGroupDTO data)
+        public async Task<IActionResult> AddUserToGroup([FromBody] AddUserToGroupDTO data)
         {
-            foreach (var u in grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId }))
+            foreach (var u in await grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId }))
             {
                 if (u.Useremail == data.userEmail)
                 {
@@ -40,7 +40,7 @@ namespace NotSoSmartSaverAPI.Controllers
             }
             if (usp.GetUserByUserEmail(data.userEmail) != null)
             {
-                grp.AddUserToGroup(data);
+                await Task.Run(() => grp.AddUserToGroup(data));
                 return Ok("User added to group");
             }
 
@@ -49,44 +49,44 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult createGroup(NewGroupDTO data)
+        public async Task<IActionResult> createGroup(NewGroupDTO data)
         {
 
-            if (grp.CreateGroup(data)) return Ok("Group created");
+            if (await Task.Run(() => grp.CreateGroup(data))) return Ok("Group created");
             else return BadRequest("Group not created");
 
         }
 
         [HttpGet("GetGroups")]
-        public IActionResult GetGroups(string userId)
+        public async Task<IActionResult> GetGroups(string userId)
         {
-            return Ok(grp.GetGroups( new GetUserGroupsDTO { userId = userId }));
+            return Ok(Task.Run(() => grp.GetGroups( new GetUserGroupsDTO { userId = userId })));
         }
 
         [HttpGet("GetGroupUsers")]
-        public IActionResult GetGroupUsers(string groupId)
+        public async Task<IActionResult> GetGroupUsers(string groupId)
         {
             GroupIdDTO data = new GroupIdDTO { groupId = groupId };
-            return Ok(grp.GetGroupUsers(data));
+            return Ok(Task.Run(() => grp.GetGroupUsers(data)));
         }
 
         [HttpDelete("RemoveGroup/{groupId}")]
-        public IActionResult RemoveGroup(string groupId)
+        public async Task<IActionResult> RemoveGroup(string groupId)
         {
             GroupIdDTO data = new GroupIdDTO { groupId = groupId };
-            grp.RemoveGroup(data);
+            await Task.Run(() => grp.RemoveGroup(data));
             return Ok("Group removed");
         }
 
 
         [HttpDelete("RemoveUserFromGroup/{userId}&{groupId}")]
-        public IActionResult RemoveUserFromGroup(string userId, string groupId)
+        public async Task<IActionResult> RemoveUserFromGroup(string userId, string groupId)
         {
             RemoveUserFromGroupDTO data = new RemoveUserFromGroupDTO { userId = userId, groupId = groupId };
-            grp.RemoveUserFromGroup(data);
-            if (grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId}).Count == 0)
+            await Task.Run(() => grp.RemoveUserFromGroup(data));
+            if ((await grp.GetGroupUsers(new GroupIdDTO { groupId = data.groupId})).Count == 0)
             {
-                grp.RemoveGroup(new GroupIdDTO { groupId = data.groupId});
+                await grp.RemoveGroup(new GroupIdDTO { groupId = data.groupId });
             }
             return Ok("User removed from group");
         }
@@ -94,9 +94,9 @@ namespace NotSoSmartSaverAPI.Controllers
 
         [HttpPut("ModifyGroup")]
 
-        public IActionResult ModifyGroup([FromBody] ModifyGroupDTO data)
+        public async Task<IActionResult> ModifyGroup([FromBody] ModifyGroupDTO data)
         {
-            grp.ModifyGroup(data);
+            await Task.Run(() => grp.ModifyGroup(data));
             return Ok("Group modified");
         }
 

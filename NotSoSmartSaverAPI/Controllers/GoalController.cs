@@ -23,39 +23,39 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpGet]
-        public IActionResult GetGoals(string ownerId)
+        public async Task<IActionResult> GetGoals(string ownerId)
         {
             GetGoalsDTO data = new GetGoalsDTO { ownerId = ownerId };
-            return Ok(_goalProcessor.getGoals(data));
+            return Ok(Task.Run(() => _goalProcessor.getGoals(data)));
         }
 
 
         [HttpDelete("{goalID}")]
-        public IActionResult RemoveGoal(string goalID)
+        public async Task<IActionResult> RemoveGoal(string goalID)
         {
-            _goalProcessor.removeGoal(goalID);
+            await Task.Run(() => _goalProcessor.removeGoal(goalID));
             return Ok("Goal removed");
         }
 
 
         [HttpPut]
-        public IActionResult ModifyGoal([FromBody]ModifyGoalDTO data)
+        public async Task<IActionResult> ModifyGoal([FromBody]ModifyGoalDTO data)
         {
-            _goalProcessor.modifyGoal(data);
+            await Task.Run(() => _goalProcessor.modifyGoal(data));
             return Ok("Goal modified");
         }
 
         [HttpPost]
-        public IActionResult AddNewGoal([FromBody] NewGoalDTO data)
+        public async Task<IActionResult> AddNewGoal([FromBody] NewGoalDTO data)
         {
-            _goalProcessor.addNewGoal(data);
+            await Task.Run(() => _goalProcessor.addNewGoal(data));
             return Ok("Goal added");
         }
 
         [HttpDelete("CompleteGoal/{goalID}")]
-        public IActionResult CompleteGoal(string goalID)
+        public async Task<IActionResult> CompleteGoal(string goalID)
         {
-            if (_goalProcessor.CompleteGoal(goalID))
+            if (await Task.Run(() => _goalProcessor.CompleteGoal(goalID)))
             {
                 return Ok("Goal complete");
             }
@@ -64,9 +64,9 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpPut("AddMoneyToGoal")]
-        public IActionResult AddMoneyToGoal([FromBody]AddMoneyDTO data)
+        public async Task<IActionResult> AddMoneyToGoal([FromBody]AddMoneyDTO data)
         {
-            _goalProcessor.addMoneyToGoal(data);
+            await Task.Run(() => _goalProcessor.addMoneyToGoal(data));
             return Ok("Money added");
         }
 
