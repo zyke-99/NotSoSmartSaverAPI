@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +14,9 @@ namespace NotSoSmartSaverAPI.Processors
     {
         private readonly IUserProcessor usp;
         private readonly IIncomeProcessor inc;
+
+        NSSSContext context = new NSSSContext();
+
         public ExpenseProcessor(IUserProcessor userProcessor, IIncomeProcessor incomeProcessor)
         {
             usp = userProcessor;
@@ -33,7 +36,6 @@ namespace NotSoSmartSaverAPI.Processors
                     Expensename = data.expenseName,
                     Expensecategory = (int)data.expenseCategory
                 };
-                NSSSContext context = new NSSSContext();
                 context.Expense.Add(expense);
                 context.SaveChanges();
                 return true;
@@ -47,7 +49,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public async Task<List<Expense>> GetExpenses(GetExpensesDTO data)
         {
-            NSSSContext context = new NSSSContext();
             List<Expense> listOfExpenses ;
             if (data.numberOfDaysToShow < 0)
             {
@@ -143,7 +144,6 @@ namespace NotSoSmartSaverAPI.Processors
         }
 
         public Task<bool> ModifyExpense(NewExpenseDTO data) => Task.Run(() =>
-            NSSSContext context = new NSSSContext();
             var expense = context.Expense.First(a => a.Expenseid == data.expenseId);
             expense.Expensename = data.expenseName;
             expense.Expensecategory = (int)data.expenseCategory;
@@ -154,7 +154,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<bool> RemoveExpense(string expenseId) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             context.Remove(context.Expense.Single(a => a.Expenseid == expenseId));
             context.SaveChanges();
             return true;

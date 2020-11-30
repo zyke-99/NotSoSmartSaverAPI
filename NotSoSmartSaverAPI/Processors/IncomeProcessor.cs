@@ -1,4 +1,4 @@
-﻿using NotSoSmartSaverAPI.DTO.IncomeDTO;
+using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.ModelsGenerated;
 //using NotSoSmartSaverWFA.DataAccess;
 using NotSoSmartSaverAPI.Interfaces;
@@ -14,11 +14,13 @@ namespace NotSoSmartSaverAPI.Processors
     public class IncomeProcessor : IIncomeProcessor
     {
         private readonly IUserProcessor usp;
+        NSSSContext context = new NSSSContext();
 
         public IncomeProcessor (IUserProcessor userProcessor)
         {
             usp = userProcessor;
         }
+        
         public Task<string> AddIncome(NewIncomeDTO data) => Task.Run(() =>
                                                           {
                                                               var newIncome = new Income
@@ -30,7 +32,6 @@ namespace NotSoSmartSaverAPI.Processors
                                                                   Incometime = DateTime.Now,
                                                                   Incomename = data.incomeName
                                                               };
-                                                              DbContext context = new NSSSContext();
                                                               context.Add(newIncome);
                                                               context.SaveChanges();
                                                               return "Income Added";
@@ -39,7 +40,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public async Task<List<Income>> GetAllIncomes(GetAllDTO data)
         {
-            NSSSContext context = new NSSSContext();
             List<Income> listOfIncomes;
             if (data.numberOfDaysToShow < 0)
             {
@@ -88,8 +88,7 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<bool> ModifyIncome(NewIncomeDTO data) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
-            var income = context.Income.First(a => a.Incomeid == data.incomeId);
+            var income = context.Income.First(a => a.Ownerid == data.ownerId);
             income.Incomename = data.incomeName;
             income.Moneyrecieved = (float)data.moneyReceived;
             context.SaveChanges();
@@ -98,7 +97,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<bool> RemoveIncome(string incomeId) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             context.Remove(context.Income.Single(a => a.Incomeid == incomeId));
             context.SaveChanges();
             return true;
@@ -106,3 +104,4 @@ namespace NotSoSmartSaverAPI.Processors
         );
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using NotSoSmartSaverAPI.DTO.BudgetDTO;
+using NotSoSmartSaverAPI.DTO.BudgetDTO;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
@@ -10,12 +10,12 @@ namespace NotSoSmartSaverAPI.Processors
 {
     public class BudgetProcessor : IBudgetProcessor
     {
+        NSSSContext context = new NSSSContext();
+        
         public Task<bool> createNewBudget(GetBudgetDTO data) => Task.Run(() =>
         {
             try
             {
-
-                NSSSContext context = new NSSSContext();
                 Budget budget = new Budget
                 {
                     Ownerid = data.ownerId,
@@ -44,7 +44,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<List<SingleBudgetDTO>> getBudget(GetBudgetDTO data) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             Budget budget = context.Budget.First(a => a.Ownerid == data.ownerId);
             List<SingleBudgetDTO> listOfCategories = new List<SingleBudgetDTO>();
             listOfCategories.Add(new SingleBudgetDTO { category = "Food", limit = budget.Food });
@@ -64,7 +63,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<bool> modifyBudget(ModifyBudgetDTO data) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             var budget = context.Budget.Find(data.ownerId);
             budget.Food = float.Parse(data.listOfValues[0].Replace('.', ','));
             budget.Leisure = float.Parse(data.listOfValues[1].Replace('.', ','));

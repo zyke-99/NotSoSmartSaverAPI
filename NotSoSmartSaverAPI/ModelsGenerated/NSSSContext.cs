@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,6 +6,7 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
 {
     public partial class NSSSContext : DbContext
     {
+
         public NSSSContext()
         {
         }
@@ -23,14 +24,14 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
         public virtual DbSet<Userandgroup> Userandgroup { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Server=194.5.157.98;Database=notsosmart;User Id=postgres;Password=nQ123.XYZ9@e;Port=5432");
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+///#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //        optionsBuilder.UseNpgsql("Server=194.5.157.98;Database=notsosmart;User Id=postgres;Password=nQ123.XYZ9@e;Port=5432");
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -222,3 +223,4 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
         }
     }
 }
+

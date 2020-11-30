@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NotSoSmartSaverAPI.DTO.BudgetDTO;
 using NotSoSmartSaverAPI.DTO.ExpensesDTO;
 using NotSoSmartSaverAPI.DTO.IncomeDTO;
@@ -16,13 +16,13 @@ namespace NotSoSmartSaverAPI.Processors
     {
 
         private readonly IBudgetProcessor bup;
+        NSSSContext context = new NSSSContext();
         public UserProcessor (IBudgetProcessor budgetProcessor)
         {
             bup = budgetProcessor;
         }
         public Task<bool> ChangeUserPassword(ChangePasswordDTO data) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             Users user = context.Users.Find(data.userId);
             user.Userpassword = data.userNewPassword;
             context.SaveChanges();
@@ -31,7 +31,6 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<bool> CreateNewUser(NewUserDTO data) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             Users user = new Users
             {
                 Userid = Guid.NewGuid().ToString(),
@@ -58,20 +57,16 @@ namespace NotSoSmartSaverAPI.Processors
 
         public async Task<Users> GetUserById(UserIdDTO data)
         {
-            NSSSContext context = new NSSSContext();
             return await Task.Run(() => context.Users.Find(data.userId));
-
         }
 
         public async Task<Users> GetUserByUserEmail(string userEmail)
         {
-            NSSSContext context = new NSSSContext();
             return await Task.Run(() => context.Users.First(a => a.Useremail == userEmail));
         }
 
         public Task<bool> ModifyUser(ModifyUserDTO data) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             Users user = context.Users.Find(data.userId);
             user.Useremail = data.newUserEmail;
             user.Username = data.newUserName;
@@ -82,10 +77,10 @@ namespace NotSoSmartSaverAPI.Processors
 
         public Task<bool> RemoveUser(string userId) => Task.Run(() =>
         {
-            NSSSContext context = new NSSSContext();
             context.Remove(context.Users.Find(userId));
             context.SaveChanges();
             return true;
         });
     }
 }
+
