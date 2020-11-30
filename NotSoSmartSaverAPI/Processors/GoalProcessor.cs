@@ -123,6 +123,7 @@ namespace NotSoSmartSaverAPI.Processors
             if (goal.Moneyallocated == goal.Moneyrequired)
             {
                 context.Goal.Remove(goal);
+                context.SaveChanges();
                 return true;
             }
             else return false;

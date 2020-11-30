@@ -143,9 +143,8 @@ namespace NotSoSmartSaverAPI.Processors
         }
 
         public Task<bool> ModifyExpense(NewExpenseDTO data) => Task.Run(() =>
-        {
             NSSSContext context = new NSSSContext();
-            var expense = context.Expense.First(a => a.Ownerid == data.ownerId);
+            var expense = context.Expense.First(a => a.Expenseid == data.expenseId);
             expense.Expensename = data.expenseName;
             expense.Expensecategory = (int)data.expenseCategory;
             expense.Moneyused = data.moneyUsed;
