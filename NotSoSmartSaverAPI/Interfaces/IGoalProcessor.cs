@@ -3,20 +3,21 @@ using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IGoalProcessor
     {
-        public List<Goal> getGoals(GetGoalsDTO data);
+        public Task<List<Goal>> getGoals(GetGoalsDTO data);
 
-        public bool removeGoal(string goalId);
+        public Task<bool> removeGoal(string goalId);
 
-        public bool modifyGoal(ModifyGoalDTO data);
+        public Task<bool> modifyGoal(ModifyGoalDTO data);
 
-        public void addNewGoal(NewGoalDTO data);
+        public Task addNewGoal(NewGoalDTO data);
 
-        public bool CompleteGoal(string goalId);
-        public bool addMoneyToGoal(AddMoneyDTO data);
+        public Task<bool> CompleteGoal(string goalId);
+        public Task<bool> addMoneyToGoal(AddMoneyDTO data);
     }
 }

@@ -19,16 +19,16 @@ namespace NotSoSmartSaverAPI.DataVerification
             exc = expensesProcessor;
             inc = incomeProcessor;
         }
-        public bool isExpenseValid(NewExpenseDTO expense)
+        public async Task<bool> isExpenseValidAsync(NewExpenseDTO expense)
         {
-            var allExpenses = exc.GetExpenses(new GetExpensesDTO
+            var allExpenses = await exc.GetExpenses(new GetExpensesDTO
             {
                 ownerId = expense.ownerId,
                 maxNumberOfExpensesToShow = -1,
                 numberOfDaysToShow = -1
 
             });
-            var allIncomes = inc.GetAllIncomes(new GetAllDTO
+            var allIncomes = await inc.GetAllIncomes(new GetAllDTO
             {
                 ownerId = expense.ownerId,
                 maxNumberOfIncomesToShow = -1,

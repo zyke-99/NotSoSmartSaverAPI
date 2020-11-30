@@ -9,6 +9,6 @@ namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IUserVerification
     {
-        public bool IsUserVerified(UserLoginDTO user);
+        public Task<bool> IsUserVerifiedAsync(UserLoginDTO user);
     }
 }

@@ -20,19 +20,19 @@ namespace NotSoSmartSaverAPI.Processors
             usp = userProcessor;
         }
 
-        public bool AddUserToGroup(AddUserToGroupDTO data)
+        public Task<bool> AddUserToGroup(AddUserToGroupDTO data) => Task.Run(async () =>
         {
             NSSSContext context = new NSSSContext();
             context.Userandgroup.Add(new Userandgroup
             {
                 Groupid = data.groupId,
-                Userid = usp.GetUserByUserEmail(data.userEmail).Userid
+                Userid = (await Task.Run(() => usp.GetUserByUserEmail(data.userEmail))).Userid
             });
             context.SaveChanges();
             return true;
-        }
+        });
 
-        public bool CreateGroup(NewGroupDTO data)
+        public Task<bool> CreateGroup(NewGroupDTO data) => Task.Run(() =>
         {
             NSSSContext context = new NSSSContext();
             Groups group = new Groups
@@ -51,13 +51,13 @@ namespace NotSoSmartSaverAPI.Processors
             context.SaveChanges();
             bup.createNewBudget(new GetBudgetDTO { ownerId = group.Groupid });
             return true;
-        }
+        });
 
-        public List<Groups> GetGroups(GetUserGroupsDTO data)
+        public async Task<List<Groups>> GetGroups(GetUserGroupsDTO data)
         {
             List<Groups> neededGroupList = new List<Groups>();
             NSSSContext context = new NSSSContext();
-            List<Userandgroup> tupleList = context.Userandgroup.Where(x => x.Userid == data.userId).ToList();
+            List<Userandgroup> tupleList = await Task.Run(() => context.Userandgroup.Where(x => x.Userid == data.userId).ToList());
             List<Groups> groupsList = context.Groups.ToList();
             if (tupleList != null)
             {
@@ -69,16 +69,16 @@ namespace NotSoSmartSaverAPI.Processors
             return neededGroupList;
         }
 
-        public List<Users> GetGroupUsers(GroupIdDTO data)
+        public async Task<List<Users>> GetGroupUsers(GroupIdDTO data)
         {
             NSSSContext context = new NSSSContext();
             List<Users> neededUsersList = new List<Users>();
-            List<Userandgroup> tupleList = context.Userandgroup.Where(a => a.Groupid == data.groupId).ToList();
+            List<Userandgroup> tupleList = await Task.Run(() => context.Userandgroup.Where(a => a.Groupid == data.groupId).ToList());
             if (tupleList != null)
             {
                 foreach (var tuple in tupleList)
                 {
-                    neededUsersList.Add(usp.GetUserById(new UserIdDTO
+                    neededUsersList.Add(await usp.GetUserById(new UserIdDTO
                     {
                         userId = tuple.Userid
                     }));
@@ -87,30 +87,30 @@ namespace NotSoSmartSaverAPI.Processors
             return neededUsersList;
         }
 
-        public bool ModifyGroup(ModifyGroupDTO data)
+        public Task<bool> ModifyGroup(ModifyGroupDTO data) => Task.Run(() =>
         {
             NSSSContext context = new NSSSContext();
             Groups group = context.Groups.Find(data.groupId);
             group.Groupname = data.newName;
             context.SaveChanges();
             return true;
-        }
+        });
 
-        public bool RemoveGroup(GroupIdDTO data)
+        public Task<bool> RemoveGroup(GroupIdDTO data) => Task.Run(() =>
         {
             NSSSContext context = new NSSSContext();
             context.Remove(context.Groups.Find(data.groupId));
             context.RemoveRange(context.Userandgroup.Where(x => x.Groupid == data.groupId));
             context.SaveChanges();
             return true;
-        }
+        });
 
-        public bool RemoveUserFromGroup(RemoveUserFromGroupDTO data)
+        public Task<bool> RemoveUserFromGroup(RemoveUserFromGroupDTO data) => Task.Run(() =>
         {
             NSSSContext context = new NSSSContext();
             context.Userandgroup.Remove(context.Userandgroup.First(a => a.Userid == data.userId && a.Groupid == data.groupId));
             context.SaveChanges();
             return true;
-        }
+        });
     }
 }

@@ -11,6 +11,7 @@ using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.Processors;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;
+using System.Net;
 
 namespace NotSoSmartSaverAPI.Controllers
 {
@@ -36,42 +37,53 @@ namespace NotSoSmartSaverAPI.Controllers
 
 
         [HttpGet("GetAllIncomes")]
-        public IActionResult GetAllIncomes(string ownerId, int numberOfDaysToShow, int maxNumberOfIncomesToShow)
+        public async Task<IActionResult> GetAllIncomes(string ownerId, int numberOfDaysToShow, int maxNumberOfIncomesToShow)
         {
             GetAllDTO data = new GetAllDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow, maxNumberOfIncomesToShow = maxNumberOfIncomesToShow };
-            return Ok(inp.GetAllIncomes(data));
+            return Ok(await Task.Run(() => inp.GetAllIncomes(data)));
         }
 
 
         [HttpGet("GetSumOfIncomesByOwner")]
-        public IActionResult GetSumOfIncomesByOwner(string ownerId, int numberOfDaysToShow)
+        public async Task<IActionResult> GetSumOfIncomesByOwner(string ownerId, int numberOfDaysToShow)
         {
             IncomesByOwnerDTO data = new IncomesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
-            return Ok(inp.GetSumOfIncomesByOwner(data));
+            return Ok(await Task.Run(() => inp.GetSumOfIncomesByOwner(data)));
         }
 
 
         [HttpPost]
-        public IActionResult AddIncome([FromBody] NewIncomeDTO data)
+        public async Task<IActionResult> AddIncome([FromBody] NewIncomeDTO data)
         {
-            inp.AddIncome(data);
+            try
+            {
+                await Task.Run(() => inp.AddIncome(data));
+
+            }
+            catch (WebException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+
+            }
             return Ok("Income added");
         }
 
 
         [HttpDelete("{incomeID}")]
         
-        public IActionResult RemoveIncome(string incomeID)
+        public async Task<IActionResult> RemoveIncome(string incomeID)
         {
-            inp.RemoveIncome(incomeID);
+            await Task.Run(() => inp.RemoveIncome(incomeID));
             return Ok("Income removed");
         }
 
         [HttpPut]
-
-        public IActionResult ModifyIncome([FromBody]ModifyIncomeDTO data)
+        public async Task<IActionResult> ModifyIncome([FromBody]NewIncomeDTO data)
         {
-            inp.ModifyIncome(data);
+            await Task.Run(() => inp.ModifyIncome(data));
             return Ok("Income modified");
         }
 
