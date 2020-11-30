@@ -3,26 +3,27 @@ using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IGroupProcessor
     {
 
-        public bool AddUserToGroup(AddUserToGroupDTO data);
+        public Task<bool> AddUserToGroup(AddUserToGroupDTO data);
 
-        public bool CreateGroup(NewGroupDTO data);
+        public Task<bool> CreateGroup(NewGroupDTO data);
 
-        public List<Groups> GetGroups(GetUserGroupsDTO data);
+        public Task<List<Groups>> GetGroups(GetUserGroupsDTO data);
         //BTW, TA DTO SAUGOT PRIE GroupsDTO ----- VISIEM MODELIAM TURI BUTI SKIRTINGI DTO FOLDERIAI
 
-        public List<Users> GetGroupUsers(GroupIdDTO data);
+        public Task<List<Users>> GetGroupUsers(GroupIdDTO data);
 
-        public bool RemoveGroup(GroupIdDTO data);
+        public Task<bool> RemoveGroup(GroupIdDTO data);
 
-        public bool RemoveUserFromGroup(RemoveUserFromGroupDTO data);
+        public Task<bool> RemoveUserFromGroup(RemoveUserFromGroupDTO data);
 
-        public bool ModifyGroup(ModifyGroupDTO data);
+        public Task<bool> ModifyGroup(ModifyGroupDTO data);
 
     }
 }

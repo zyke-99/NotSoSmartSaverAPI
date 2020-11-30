@@ -187,7 +187,7 @@ namespace NotSoSmartSaverAPI.ModelsGenerated
 
             modelBuilder.Entity<Userandgroup>(entity =>
             {
-
+                entity.HasKey(e => new { e.Groupid, e.Userid }).HasName("userandgroup_pkey");
                 entity.ToTable("userandgroup");
 
                 entity.Property(e => e.Groupid)

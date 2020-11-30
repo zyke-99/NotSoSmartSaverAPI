@@ -3,19 +3,20 @@ using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NotSoSmartSaverAPI.Interfaces
 {
     public interface IIncomeProcessor
     {
-        public List<Income> GetAllIncomes(GetAllDTO data);
+        public Task<List<Income>> GetAllIncomes(GetAllDTO data);
 
-        public List<IncomeSumByOwnerDTO> GetSumOfIncomesByOwner(IncomesByOwnerDTO data);
+        public Task<List<IncomeSumByOwnerDTO>> GetSumOfIncomesByOwner(IncomesByOwnerDTO data);
 
-        public bool AddIncome(NewIncomeDTO data);
+        public Task<string> AddIncome(NewIncomeDTO data);
 
-        public bool RemoveIncome(string incomeId);
+        public Task<bool> RemoveIncome(string incomeId);
 
-        public bool ModifyIncome(NewIncomeDTO data);
+        public Task<bool> ModifyIncome(NewIncomeDTO data);
     }
 }

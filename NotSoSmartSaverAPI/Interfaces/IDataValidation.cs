@@ -9,7 +9,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 {
      public interface IDataValidation
     {
-        bool isExpenseValid(NewExpenseDTO expense);
+        Task<bool> isExpenseValidAsync(NewExpenseDTO expense);
         bool isGoalValid(Goal goal);
         bool isIncomeValid(Income income);
         bool isGroupValid(Groups group);

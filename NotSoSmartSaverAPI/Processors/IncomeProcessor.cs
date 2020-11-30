@@ -20,78 +20,88 @@ namespace NotSoSmartSaverAPI.Processors
         {
             usp = userProcessor;
         }
-        public bool AddIncome(NewIncomeDTO data)
-        {
+        
+        public Task<string> AddIncome(NewIncomeDTO data) => Task.Run(() =>
+                                                          {
+                                                              var newIncome = new Income
+                                                              {
+                                                                  Incomeid = Guid.NewGuid().ToString(),
+                                                                  Ownerid = data.ownerId,
+                                                                  Userid = data.userId,
+                                                                  Moneyrecieved = (float)data.moneyReceived,
+                                                                  Incometime = DateTime.Now,
+                                                                  Incomename = data.incomeName
+                                                              };
+                                                              context.Add(newIncome);
+                                                              context.SaveChanges();
+                                                              return "Income Added";
+                                                          }
+            );
 
-            var newIncome = new Income {
-                Incomeid = Guid.NewGuid().ToString(),
-                Ownerid = data.ownerId, 
-                Userid = data.userId, 
-                Moneyrecieved = (float) data.moneyReceived, 
-                Incometime = DateTime.Now, 
-                Incomename = data.incomeName};
-            context.Add(newIncome);
-            context.SaveChanges();
-            return true;
-        }
-
-        public List<Income> GetAllIncomes(GetAllDTO data)
+        public async Task<List<Income>> GetAllIncomes(GetAllDTO data)
         {
             List<Income> listOfIncomes;
             if (data.numberOfDaysToShow < 0)
             {
                 if (data.maxNumberOfIncomesToShow < 0)
                 {
-                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId).ToList();
+                    listOfIncomes = await Task.Run(() => context.Income.Where(a => a.Ownerid == data.ownerId)
+                                                                       .ToList());
                 }
                 else
-                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId).OrderBy(a => a.Incometime).Take(data.maxNumberOfIncomesToShow).ToList();
+                    listOfIncomes = await Task.Run(() => context.Income.Where(a => a.Ownerid == data.ownerId)
+                                                                       .OrderBy(a => a.Incometime)
+                                                                       .Take(data.maxNumberOfIncomesToShow).ToList());
             }
             else
             {
                 if (data.maxNumberOfIncomesToShow < 0)
                 {
-                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow)).ToList();
+                    listOfIncomes = await Task.Run(() => context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow))
+                                                                       .ToList());
                 }
                 else
-                    listOfIncomes = context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow)).OrderBy(a => a.Incometime).Take(data.maxNumberOfIncomesToShow).ToList();
+                    listOfIncomes = await Task.Run(() => context.Income.Where(a => a.Ownerid == data.ownerId && a.Incometime > DateTime.Now.AddDays(-data.numberOfDaysToShow))
+                                                                       .OrderBy(a => a.Incometime)
+                                                                       .Take(data.maxNumberOfIncomesToShow).ToList());
             }
             return listOfIncomes;
         }
 
-        public List<IncomeSumByOwnerDTO> GetSumOfIncomesByOwner(IncomesByOwnerDTO data)
+        public async Task<List<IncomeSumByOwnerDTO>> GetSumOfIncomesByOwner(IncomesByOwnerDTO data)
         {
             GetAllDTO data2 = new GetAllDTO();
             data2.ownerId = data.ownerId;
             data2.numberOfDaysToShow = data.numberOfDaysToShow;
             data2.maxNumberOfIncomesToShow = -1;
 
-            List<Income> listOfIncomes = GetAllIncomes(data2);
-            List<IncomeSumByOwnerDTO> modifiedIncomes = listOfIncomes.
+            List<Income> listOfIncomes = await Task.Run(() => GetAllIncomes(data2));
+            List<IncomeSumByOwnerDTO> modifiedIncomes = (await Task.WhenAll(listOfIncomes.
                 GroupBy(e => e.Userid).
-                Select(ce => new IncomeSumByOwnerDTO
+                Select(async ce => new IncomeSumByOwnerDTO
                 {
-                    userName = usp.GetUserById(new UserIdDTO { userId = ce.First().Userid } ).Username,
+                    userName = (await Task.Run(() => usp.GetUserById(new UserIdDTO { userId = ce.First().Userid }))).Username,
                     sum = ce.Sum(e => e.Moneyrecieved)
-                }).ToList();
+                }))).ToList();
             return modifiedIncomes;
         }
 
-        public bool ModifyIncome(NewIncomeDTO data)
+        public Task<bool> ModifyIncome(NewIncomeDTO data) => Task.Run(() =>
         {
             var income = context.Income.First(a => a.Ownerid == data.ownerId);
             income.Incomename = data.incomeName;
-            income.Moneyrecieved = (float )data.moneyReceived;
+            income.Moneyrecieved = (float)data.moneyReceived;
             context.SaveChanges();
             return true;
-        }
+        });
 
-        public bool RemoveIncome(string incomeId)
+        public Task<bool> RemoveIncome(string incomeId) => Task.Run(() =>
         {
             context.Remove(context.Income.Single(a => a.Incomeid == incomeId));
             context.SaveChanges();
             return true;
         }
+        );
     }
 }
 

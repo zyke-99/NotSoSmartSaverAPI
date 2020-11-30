@@ -23,7 +23,7 @@ namespace NotSoSmartSaverAPI.Processors
             _incomeProcessor = incomeProcessor;
             _expensesProcessor = expensesProcessor;
         }
-        public void addNewGoal(NewGoalDTO data)
+        public Task addNewGoal(NewGoalDTO data) => Task.Run(() =>
         {
             var newGoal = new Goal
             {
@@ -36,15 +36,15 @@ namespace NotSoSmartSaverAPI.Processors
                 Goalname = data.goalName
             };
             context.Goal.Add(newGoal);
-        }
+        });
 
-        public List<Goal> getGoals(GetGoalsDTO data)
+        public Task<List<Goal>> getGoals(GetGoalsDTO data) => Task.Run(() =>
         {
             var listOfGoals = context.Goal.Where(a => a.Ownerid == data.ownerId).ToList();
             return listOfGoals;
-        }
+        });
 
-        public bool modifyGoal(ModifyGoalDTO data)
+        public Task<bool> modifyGoal(ModifyGoalDTO data) => Task.Run(() =>
         {
             Goal goal = context.Goal.First(a => a.Goalid == data.goalId);
             goal.Goalname = data.newGoalName;
@@ -52,8 +52,8 @@ namespace NotSoSmartSaverAPI.Processors
             goal.Goalexpectedtime = data.newExpectedTime;
             context.SaveChanges();
             return true;
+        });
 
-        }
         public bool modifyAllocatedMoney(ModifyAllocatedMoneyDTO data)
         {
             Goal goal = context.Goal.First(a => a.Goalid == data.goalId);
@@ -62,13 +62,13 @@ namespace NotSoSmartSaverAPI.Processors
             return true;
         }
 
-        public bool addMoneyToGoal(AddMoneyDTO data)
+        public async Task<bool> addMoneyToGoal(AddMoneyDTO data)
         {
-            if (data.moneyToAdd <= _expensesProcessor.getUserMoney(new UserIdDTO { userId = data.userId}))
+            if (data.moneyToAdd <= await Task.Run(() => _expensesProcessor.getUserMoneyAsync(new UserIdDTO { userId = data.userId})))
             {
                 if (data.goalAllocatedMoney + data.moneyToAdd > data.goalRequiredMoney)
                 {
-                    _expensesProcessor.AddExpense(new NewExpenseDTO
+                    await _expensesProcessor.AddExpense(new NewExpenseDTO
                     {
                         userId = data.userId,
                         ownerId = data.userId,
@@ -81,7 +81,7 @@ namespace NotSoSmartSaverAPI.Processors
                 }
                 else
                 {
-                    _expensesProcessor.AddExpense(new NewExpenseDTO
+                    await _expensesProcessor.AddExpense(new NewExpenseDTO
                     {
                         userId = data.userId,
                         ownerId = data.userId,
@@ -96,7 +96,7 @@ namespace NotSoSmartSaverAPI.Processors
             return true;
         }
 
-        public bool removeGoal(string goalId)
+        public Task<bool> removeGoal(string goalId) => Task.Run(() =>
         {
             Goal goal = context.Goal.Single(a => a.Goalid == goalId);
             context.Remove(goal);
@@ -108,20 +108,21 @@ namespace NotSoSmartSaverAPI.Processors
                 incomeName = "Removed goal",
                 moneyReceived = goal.Moneyallocated
 
-            }) ;
+            });
             return true;
-        }
+        });
 
-        public bool CompleteGoal(string goalID)
+        public Task<bool> CompleteGoal(string goalID) => Task.Run(() =>
         {
             Goal goal = context.Goal.First(x => x.Goalid == goalID);
             if (goal.Moneyallocated == goal.Moneyrequired)
             {
                 context.Goal.Remove(goal);
+                context.SaveChanges();
                 return true;
             }
             else return false;
-        }
+        });
     }
 }
 

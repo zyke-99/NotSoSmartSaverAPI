@@ -16,10 +16,10 @@ namespace NotSoSmartSaverAPI.DataVerification
         {
             usp = userProcessor;
         }
-        public bool IsUserVerified(UserLoginDTO user)
+        public async Task<bool> IsUserVerifiedAsync(UserLoginDTO user)
         {
             
-            Users tempUser = usp.GetUserByUserEmail(user.email);
+            Users tempUser = await usp.GetUserByUserEmail(user.email);
             if (tempUser == null) return false;
             else
             {

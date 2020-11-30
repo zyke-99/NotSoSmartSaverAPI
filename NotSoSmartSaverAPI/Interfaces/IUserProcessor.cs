@@ -3,21 +3,22 @@ using NotSoSmartSaverAPI.ModelsGenerated;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace NotSoSmartSaverAPI.Interfaces
 { 
     public interface IUserProcessor
     {
-        Users GetUserByUserEmail(string userEmail);
+        Task<Users> GetUserByUserEmail(string userEmail);
 
-        Users GetUserById(UserIdDTO data);
+        Task<Users> GetUserById(UserIdDTO data);
 
-        bool RemoveUser(string userId);
+        Task<bool> RemoveUser(string userId);
 
-        bool ModifyUser(ModifyUserDTO data);
+        Task<bool> ModifyUser(ModifyUserDTO data);
 
-        bool ChangeUserPassword(ChangePasswordDTO data);
+        Task<bool> ChangeUserPassword(ChangePasswordDTO data);
 
-        bool CreateNewUser(NewUserDTO data);
+        Task<bool> CreateNewUser(NewUserDTO data);
     }
 }
