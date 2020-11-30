@@ -26,7 +26,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public async Task<IActionResult> GetGoals(string ownerId)
         {
             GetGoalsDTO data = new GetGoalsDTO { ownerId = ownerId };
-            return Ok(Task.Run(() => _goalProcessor.getGoals(data)));
+            return Ok(await Task.Run(() => _goalProcessor.getGoals(data)));
         }
 
 

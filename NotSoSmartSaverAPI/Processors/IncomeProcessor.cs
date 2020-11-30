@@ -77,13 +77,13 @@ namespace NotSoSmartSaverAPI.Processors
             data2.maxNumberOfIncomesToShow = -1;
 
             List<Income> listOfIncomes = await Task.Run(() => GetAllIncomes(data2));
-            List<IncomeSumByOwnerDTO> modifiedIncomes = listOfIncomes.
+            List<IncomeSumByOwnerDTO> modifiedIncomes = (await Task.WhenAll(listOfIncomes.
                 GroupBy(e => e.Userid).
                 Select(async ce => new IncomeSumByOwnerDTO
                 {
-                    userName = (await usp.GetUserById(new UserIdDTO { userId = ce.First().Userid } )).Username,
+                    userName = (await Task.Run(() => usp.GetUserById(new UserIdDTO { userId = ce.First().Userid }))).Username,
                     sum = ce.Sum(e => e.Moneyrecieved)
-                }).ToList();
+                }))).ToList();
             return modifiedIncomes;
         }
 

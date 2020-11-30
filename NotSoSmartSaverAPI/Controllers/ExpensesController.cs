@@ -54,7 +54,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public async Task<IActionResult> GetExpenses(string ownerId, int numberOfDaysToShow, int maxNumberOfExpensesToShow)
         {
             GetExpensesDTO data = new GetExpensesDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow, maxNumberOfExpensesToShow = maxNumberOfExpensesToShow };
-            return Ok(Task.Run(() => exp.GetExpenses(data)));
+            return Ok(await Task.Run(() => exp.GetExpenses(data)));
         }
 
 
@@ -62,14 +62,14 @@ namespace NotSoSmartSaverAPI.Controllers
         public async Task<IActionResult> GetSumOfExpensesByCategory(string ownerId, int numberOfDaysToShow)
         {
             ExpensesByOwnerDTO data = new ExpensesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
-            return Ok(Task.Run(() => exp.GetSumOfExpensesByCategory(data)));
+            return Ok(await Task.Run(() => exp.GetSumOfExpensesByCategory(data)));
         }
 
         [HttpGet("GetSumOfExpensesByOwner")]
         public async Task<IActionResult> GetSumOfExpensesByOwner(string ownerId, int numberOfDaysToShow)
         {
             ExpensesByOwnerDTO data = new ExpensesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
-            return Ok(Task.Run(() => exp.GetSumOfExpensesByOwner(data)));
+            return Ok(await Task.Run(() => exp.GetSumOfExpensesByOwner(data)));
         }
 
         [HttpDelete("{expenseID}")]
@@ -82,7 +82,7 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpPut("ModifyExpense")]
         public async Task<IActionResult> ModifyExpense ([FromBody] NewExpenseDTO data)
         {
-            return Ok(Task.Run(() => exp.ModifyExpense(data)));
+            return Ok(await Task.Run(() => exp.ModifyExpense(data)));
         }
 
     }

@@ -112,13 +112,13 @@ namespace NotSoSmartSaverAPI.Processors
             data2.maxNumberOfExpensesToShow = -1;
 
             List<Expense> listOfExpenses = await Task.Run(() => GetExpenses(data2));
-            List<SumByOwnerDTO> modifiedExpenses = listOfExpenses.
+            List<SumByOwnerDTO> modifiedExpenses = (await  Task.WhenAll(listOfExpenses.
                 GroupBy(e => e.Userid).
-                Select(ce => new SumByOwnerDTO
+                Select(async ce => new SumByOwnerDTO
                 {
-                    userName = usp.GetUserById(new UserIdDTO { userId = ce.First().Userid }).Username,
+                    userName = (await Task.Run(() => usp.GetUserById(new UserIdDTO { userId = ce.First().Userid }))).Username,
                     sum = ce.Sum(e => e.Moneyused)
-                }).ToList();
+                }))).ToList();
             return modifiedExpenses;
         }
 

@@ -40,7 +40,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public async Task<IActionResult> GetAllIncomes(string ownerId, int numberOfDaysToShow, int maxNumberOfIncomesToShow)
         {
             GetAllDTO data = new GetAllDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow, maxNumberOfIncomesToShow = maxNumberOfIncomesToShow };
-            return Ok(Task.Run(() => inp.GetAllIncomes(data)));
+            return Ok(await Task.Run(() => inp.GetAllIncomes(data)));
         }
 
 
@@ -48,7 +48,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public async Task<IActionResult> GetSumOfIncomesByOwner(string ownerId, int numberOfDaysToShow)
         {
             IncomesByOwnerDTO data = new IncomesByOwnerDTO { ownerId = ownerId, numberOfDaysToShow = numberOfDaysToShow };
-            return Ok(Task.Run(() => inp.GetSumOfIncomesByOwner(data)));
+            return Ok(await Task.Run(() => inp.GetSumOfIncomesByOwner(data)));
         }
 
 

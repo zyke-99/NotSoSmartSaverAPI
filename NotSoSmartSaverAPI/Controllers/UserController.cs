@@ -37,7 +37,7 @@ namespace NotSoSmartSaverAPI.Controllers
         public async Task<IActionResult> UserLogin( string email, string password)
         {
             UserLoginDTO data = new UserLoginDTO { email = email, password = password };
-            if (_userVerification.IsUserVerifiedAsync(data))
+            if (await _userVerification.IsUserVerifiedAsync(data))
             {
                 return Ok(Task.Run(() => _userProcessor.GetUserByUserEmail(data.email)));
             }

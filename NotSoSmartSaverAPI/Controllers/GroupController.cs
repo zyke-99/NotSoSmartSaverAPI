@@ -60,14 +60,14 @@ namespace NotSoSmartSaverAPI.Controllers
         [HttpGet("GetGroups")]
         public async Task<IActionResult> GetGroups(string userId)
         {
-            return Ok(Task.Run(() => grp.GetGroups( new GetUserGroupsDTO { userId = userId })));
+            return Ok(await Task.Run(() => grp.GetGroups( new GetUserGroupsDTO { userId = userId })));
         }
 
         [HttpGet("GetGroupUsers")]
         public async Task<IActionResult> GetGroupUsers(string groupId)
         {
             GroupIdDTO data = new GroupIdDTO { groupId = groupId };
-            return Ok(Task.Run(() => grp.GetGroupUsers(data)));
+            return Ok(await Task.Run(() => grp.GetGroupUsers(data)));
         }
 
         [HttpDelete("RemoveGroup/{groupId}")]
