@@ -11,7 +11,7 @@ using NotSoSmartSaverAPI.DTO.IncomeDTO;
 using NotSoSmartSaverAPI.Processors;
 using NotSoSmartSaverAPI.Interfaces;
 using NotSoSmartSaverAPI.ModelsGenerated;
-using NotSoSmartSaverAPI.Exceptions;
+using System.Net;
 
 namespace NotSoSmartSaverAPI.Controllers
 {
@@ -58,15 +58,15 @@ namespace NotSoSmartSaverAPI.Controllers
             try
             {
                 await Task.Run(() => inp.AddIncome(data));
-                
+
             }
-            catch (MoneyReceivedException ex)
+            catch (WebException ex)
             {
-                return BadRequest("An amount has to be entered");
+                return BadRequest(ex.Message);
             }
-            catch (NameException ex)
+            catch (Exception ex)
             {
-                return BadRequest("An income name has to be entered");
+
             }
             return Ok("Income added");
         }
