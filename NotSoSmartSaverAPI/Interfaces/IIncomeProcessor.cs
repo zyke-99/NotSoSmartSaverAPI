@@ -17,6 +17,6 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public Task<bool> RemoveIncome(string incomeId);
 
-        public Task<bool> ModifyIncome(NewIncomeDTO data);
+        public Task<bool> ModifyIncome(ModifyIncomeDTO data);
     }
 }
