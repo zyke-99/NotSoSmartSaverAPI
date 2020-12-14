@@ -80,7 +80,7 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpPut("ModifyExpense")]
-        public async Task<IActionResult> ModifyExpense ([FromBody] NewExpenseDTO data)
+        public async Task<IActionResult> ModifyExpense ([FromBody] ModifyExpenseDTO data)
         {
             return Ok(await Task.Run(() => exp.ModifyExpense(data)));
         }

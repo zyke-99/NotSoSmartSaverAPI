@@ -81,7 +81,7 @@ namespace NotSoSmartSaverAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> ModifyIncome([FromBody]NewIncomeDTO data)
+        public async Task<IActionResult> ModifyIncome([FromBody]ModifyIncomeDTO data)
         {
             await Task.Run(() => inp.ModifyIncome(data));
             return Ok("Income modified");

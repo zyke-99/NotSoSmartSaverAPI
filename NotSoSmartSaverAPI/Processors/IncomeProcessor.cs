@@ -86,9 +86,9 @@ namespace NotSoSmartSaverAPI.Processors
             return modifiedIncomes;
         }
 
-        public Task<bool> ModifyIncome(NewIncomeDTO data) => Task.Run(() =>
+        public Task<bool> ModifyIncome(ModifyIncomeDTO data) => Task.Run(() =>
         {
-            var income = context.Income.First(a => a.Ownerid == data.ownerId);
+            var income = context.Income.First(a => a.Incomeid == data.incomeId);
             income.Incomename = data.incomeName;
             income.Moneyrecieved = (float)data.moneyReceived;
             context.SaveChanges();

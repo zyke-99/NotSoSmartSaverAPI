@@ -21,7 +21,7 @@ namespace NotSoSmartSaverAPI.Interfaces
 
         public Task<bool> RemoveExpense(string expenseId);
 
-        public Task<bool> ModifyExpense(NewExpenseDTO data);
+        public Task<bool> ModifyExpense(ModifyExpenseDTO data);
       
         public Task<float> getUserMoneyAsync(UserIdDTO data);
     }

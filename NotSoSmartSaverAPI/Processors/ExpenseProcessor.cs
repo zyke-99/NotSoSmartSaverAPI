@@ -143,7 +143,8 @@ namespace NotSoSmartSaverAPI.Processors
             
         }
 
-        public Task<bool> ModifyExpense(NewExpenseDTO data) => Task.Run(() =>
+        public Task<bool> ModifyExpense(ModifyExpenseDTO data) => Task.Run(() =>
+        {
             var expense = context.Expense.First(a => a.Expenseid == data.expenseId);
             expense.Expensename = data.expenseName;
             expense.Expensecategory = (int)data.expenseCategory;
