@@ -51,6 +51,12 @@ namespace NotSoSmartSaverAPI.Controllers
             return Ok("User has been modified");
         }
 
+        [HttpPut("ChangeUserPassword")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordDTO data)
+        {
+            await Task.Run(() => _userProcessor.ChangeUserPassword(data));
+            return Ok("Password has been changed");
+        }
 
         [HttpDelete("{userID}")]
 
